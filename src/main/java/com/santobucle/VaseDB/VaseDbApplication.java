@@ -1,13 +1,13 @@
-package com.santobucle.VasedDB;
+package com.santobucle.VaseDB;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class VasedDbApplication {
+public class VaseDbApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(VasedDbApplication.class, args);
+		SpringApplication.run(VaseDbApplication.class, args);
 	}
 
 }

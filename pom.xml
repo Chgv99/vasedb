@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.santobucle</groupId>
-	<artifactId>VasedDB</artifactId>
+	<artifactId>VaseDB</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>VasedDB</name>
+	<name>VaseDB</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>

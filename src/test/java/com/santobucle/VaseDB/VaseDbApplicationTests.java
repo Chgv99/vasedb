@@ -1,10 +1,10 @@
-package com.santobucle.VasedDB;
+package com.santobucle.VaseDB;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class VasedDbApplicationTests {
+class VaseDbApplicationTests {
 
 	@Test
 	void contextLoads() {
