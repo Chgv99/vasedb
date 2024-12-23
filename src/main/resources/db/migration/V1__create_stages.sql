@@ -6,4 +6,8 @@ VALUES
     ('Color'),
     ('Stickers'),
     ('Pitch'),
-    ('Blackout')
+    ('Blackout');
+
+INSERT INTO build(name, released_at)
+VALUES
+    ('dbtest 0.0.1', NOW());

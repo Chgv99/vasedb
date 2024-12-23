@@ -7,4 +7,7 @@ WHERE name in (
     'Stickers',
     'Pitch',
     'Blackout'
-)
+);
+
+DELETE FROM build
+WHERE name = 'dbtest 0.0.1';
