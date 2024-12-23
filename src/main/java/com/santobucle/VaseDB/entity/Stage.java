@@ -16,11 +16,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "stage")
+@Table(name = "Stage")
 public class Stage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long stage_id;
+    private Long id;
 
     @Column(name = "name", nullable = false, unique = true)
     private String name;
