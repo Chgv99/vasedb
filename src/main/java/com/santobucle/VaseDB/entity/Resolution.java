@@ -1,14 +1,14 @@
 package com.santobucle.VaseDB.entity;
 
-import java.util.List;
+import java.util.Date;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,21 +20,23 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Stage")
-public class Stage {
-
+@Table(name = "Resolution")
+public class Resolution {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, unique = true)
-    private String name;
+    // Foreign key
+    @ManyToOne
+    @JoinColumn(name = "stage_build_id", nullable = false)
+    private StageBuild stageBuild;
 
-    @OneToMany(mappedBy = "stage", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<StageBuild> stageBuilds;
+    @Column(name = "elapsed_time")
+    private int elapsedTime;
 
-    public Stage(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+    @Column(name = "speed_qualifier")
+    private String speedQualifier;
+
+    @Column(name="solved_at")
+    private Date date;
 }

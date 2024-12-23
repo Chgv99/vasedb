@@ -1,5 +1,6 @@
 package com.santobucle.VaseDB.entity;
 
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -20,21 +21,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Stage")
-public class Stage {
-
+@Table(name = "Build")
+public class Build {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "name", nullable = false, unique = true)
-    private String name;
+    private String version;
 
-    @OneToMany(mappedBy = "stage", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Column(name = "released_at")
+    private Date releaseDate;
+
+    @OneToMany(mappedBy = "build", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StageBuild> stageBuilds;
-
-    public Stage(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 }
