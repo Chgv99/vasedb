@@ -32,9 +32,7 @@ public class StageBuildMapper {
     }
     
     public static StageBuild mapToStageBuild(StageBuildDto stageBuildDto) {
-
         String json = "";
-
         // Serialization
         try {
             ObjectMapper objectMapper = new ObjectMapper();

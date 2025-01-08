@@ -35,9 +35,6 @@ public class StageBuildServiceImpl implements StageBuildService {
     @Autowired
     private BuildService buildService;
 
-    /** TODO: MIRAR EN INTERNET COMO RELACIONAR ENTIDADES, PORQUE
-      * TENGO QUE GUARDAR EL STAGEBUILD ANTES DE ASOCIARLO A STAGE Y BUILD
-      * Y PODER GUARDARLOS INDIVIDUALMENTE */
     public StageBuildDto createStageBuild(StageBuildDto stageBuildDto) {
         StageBuild stageBuild = StageBuildMapper.mapToStageBuild(stageBuildDto);
         
@@ -49,10 +46,6 @@ public class StageBuildServiceImpl implements StageBuildService {
         Build build = BuildMapper.mapToBuild(buildDto);
         stageBuild.setBuild(build);
         
-        // StageBuildDto associatedStageBuildDto = associateStageBuild(stageBuildDto);
-        
-        // StageBuild savedStageBuild = stageBuildRepository.save(StageBuildMapper.mapToStageBuild(associatedStageBuildDto));
-        // StageBuild stageBuild = StageBuildMapper.mapToStageBuild(stageBuildDto);
         Optional<StageBuild> savedStageBuild = stageBuildRepository.saveWithJsonCast(
             stageBuild.getBuild().getId(),
             stageBuild.getStage().getId(),
@@ -62,19 +55,6 @@ public class StageBuildServiceImpl implements StageBuildService {
         return StageBuildMapper.mapToStageBuildDto(savedStageBuild.orElseThrow(() ->
             new IllegalStateException("StageBuild could not be saved successfully")));
     }
-
-    // private StageBuildDto associateStageBuild(StageBuildDto stageBuildDto) {
-        
-
-    //     // Add stagebuild to stage and build lists. Then save.
-    //     StageDto newStageDto = stageService.addStageBuildToList(stageDto, stageBuildDto);
-    //     BuildDto newBuildDto = buildService.addStageBuildToList(buildDto, stageBuildDto);
-        
-    //     stageBuildDto.setStageDto(newStageDto);
-    //     stageBuildDto.setBuildDto(newBuildDto);
-
-    //     return stageBuildDto;
-    // }
 
     public StageBuildDto getStageBuildById(Long stageBuildId) {
         StageBuild build = stageBuildRepository.findById(stageBuildId)

@@ -1,9 +1,6 @@
 package com.santobucle.VaseDB.dto;
 
 import java.util.Date;
-import java.util.List;
-
-import com.santobucle.VaseDB.entity.StageBuild;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
