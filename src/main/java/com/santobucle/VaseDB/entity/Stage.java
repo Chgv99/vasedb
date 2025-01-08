@@ -37,4 +37,6 @@ public class Stage {
         this.id = id;
         this.name = name;
     }
+
+    // TODO: ADD FIELDS FOR SPEED QUALIFIER TIME INFORMATION
 }

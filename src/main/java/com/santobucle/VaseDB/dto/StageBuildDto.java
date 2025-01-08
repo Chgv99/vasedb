@@ -11,8 +11,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StageDto {
+public class StageBuildDto {
     private Long id;
-    private String name;
-    // private List<StageBuildDto> stageBuilds;
+    private StageDto stageDto;
+    private BuildDto buildDto;
+    private int duration;
+    private List<QualifierDataDto> qualifierData;
 }

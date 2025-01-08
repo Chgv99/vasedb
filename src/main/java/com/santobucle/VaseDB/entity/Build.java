@@ -3,6 +3,8 @@ package com.santobucle.VaseDB.entity;
 import java.util.Date;
 import java.util.List;
 
+import com.santobucle.VaseDB.dto.StageBuildDto;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,4 +37,8 @@ public class Build {
 
     @OneToMany(mappedBy = "build", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StageBuild> stageBuilds;
+
+    // public void addStageBuildDto(StageBuildDto stageBuildDto) {
+    //     stageBuilds.add(stageBuildDto);
+    // }
 }

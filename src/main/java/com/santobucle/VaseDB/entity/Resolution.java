@@ -32,7 +32,7 @@ public class Resolution {
     private StageBuild stageBuild;
 
     @Column(name = "elapsed_time")
-    private int elapsedTime;
+    private double elapsedTime;
 
     @Column(name = "speed_qualifier")
     private String speedQualifier;

@@ -1,6 +1,9 @@
 package com.santobucle.VaseDB.dto;
 
+import java.util.Date;
 import java.util.List;
+
+import com.santobucle.VaseDB.entity.StageBuild;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,8 +14,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StageDto {
+public class BuildDto {
     private Long id;
-    private String name;
-    // private List<StageBuildDto> stageBuilds;
+    private String version;
+    private Date releaseDate;
+    // private List<StageBuild> stageBuilds;
 }
