@@ -3,6 +3,7 @@ package com.santobucle.VaseDB.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.tomcat.util.file.ConfigurationSource.Resource;
 import org.springframework.stereotype.Service;
 
 import com.santobucle.VaseDB.dto.BuildDto;
@@ -25,12 +26,13 @@ public class BuildServiceImpl implements BuildService {
 
     @Override
     public BuildDto createBuild(BuildDto buildDto) {
-        BuildDto existingBuildDto = getBuildByName(buildDto.getVersion());
-        if (existingBuildDto != null)
-            return existingBuildDto;
-
-        Build build = BuildMapper.mapToBuild(buildDto);
-        return createBuild(build);
+        BuildDto resultBuildDto;
+        try {
+            resultBuildDto = getBuildByName(buildDto.getVersion());
+        } catch (ResourceNotFoundException e) {
+            resultBuildDto = createBuild(BuildMapper.mapToBuild(buildDto));
+        }
+        return resultBuildDto;
     }
 
     @Override
@@ -62,7 +64,7 @@ public class BuildServiceImpl implements BuildService {
     public BuildDto getBuildByName(String buildName) {
         Build build = buildRepository.findByName(buildName)
                 .orElseThrow(() -> 
-                    new ResourceNotFoundException("Build with id " + buildName + " does not exist."));
+                    new ResourceNotFoundException("Build with name " + buildName + " does not exist."));
         return BuildMapper.mapToBuildDto(build);
     }
 }
