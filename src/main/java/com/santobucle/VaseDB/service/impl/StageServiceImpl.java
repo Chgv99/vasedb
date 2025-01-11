@@ -25,7 +25,7 @@ public class StageServiceImpl implements StageService {
 
     @Override
     public StageDto createStage(StageDto stageDto) {
-        StageDto existingStageDto = getStageByName(stageDto.getName());
+        StageDto existingStageDto = getStageByName(getFormattedName(stageDto.getName()));
         if (existingStageDto != null)
             return existingStageDto;
 
@@ -63,6 +63,11 @@ public class StageServiceImpl implements StageService {
             .orElseThrow(() -> 
                 new ResourceNotFoundException("Stage with name '" + stageName + "'' does not exist."));
         return StageMapper.mapToStageDto(stage);
+    }
+
+    private String getFormattedName(String name) {
+        name = name.toLowerCase();
+        return name.substring(0, 1).toUpperCase() + name.substring(1);
     }
 
 }
