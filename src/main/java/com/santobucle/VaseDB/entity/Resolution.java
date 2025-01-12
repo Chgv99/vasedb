@@ -36,6 +36,9 @@ public class Resolution {
 
     @Column(name = "speed_qualifier")
     private String speedQualifier;
+    
+    @Column(name = "vase_attributes", columnDefinition = "json")
+    private String vaseAttributes;
 
     @Column(name="solved_at")
     private Date date;

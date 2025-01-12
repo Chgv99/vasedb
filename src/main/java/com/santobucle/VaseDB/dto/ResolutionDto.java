@@ -16,5 +16,6 @@ public class ResolutionDto {
     private StageBuildDto stageBuildDto;
     private double elapsedTime;
     private String speedQualifier;
+    private VaseAttributesDto vaseAttributes;
     private Date date;
 }

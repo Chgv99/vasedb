@@ -1,5 +1,7 @@
 package com.santobucle.VaseDB.service.impl;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.santobucle.VaseDB.dto.ResolutionDto;
@@ -29,8 +31,14 @@ public class ResolutionServiceImpl implements ResolutionService {
         StageBuildDto savedStageBuildDto = stageBuildService
                 .createStageBuild(StageBuildMapper.mapToStageBuildDto(resolution.getStageBuild()));
         resolution.setStageBuild(StageBuildMapper.mapToStageBuild(savedStageBuildDto));
-        Resolution savedResolution = resolutionRepository.save(resolution);
-        return ResolutionMapper.mapToResolutionDto(savedResolution);
+        Optional<Resolution> savedResolution = resolutionRepository.saveWithJsonCast(
+            resolution.getStageBuild().getId(),
+            resolution.getElapsedTime(),
+            resolution.getSpeedQualifier(),
+            resolution.getVaseAttributes(),
+            resolution.getDate());
+        return ResolutionMapper.mapToResolutionDto(savedResolution.orElseThrow(() -> 
+            new IllegalStateException("Resolution could not be saved successfully")));
     }
 
     @Override
