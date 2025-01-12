@@ -46,6 +46,15 @@ public class StageBuildServiceImpl implements StageBuildService {
         Build build = BuildMapper.mapToBuild(buildDto);
         stageBuild.setBuild(build);
         
+        // Return existing StageBuild if it exists
+        try {
+            StageBuildDto resultStageBuildDto = getStageBuildByStageAndBuildId(
+                stageDto.getId(), buildDto.getId());
+            return resultStageBuildDto;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
         Optional<StageBuild> savedStageBuild = stageBuildRepository.saveWithJsonCast(
             stageBuild.getBuild().getId(),
             stageBuild.getStage().getId(),
@@ -57,16 +66,23 @@ public class StageBuildServiceImpl implements StageBuildService {
     }
 
     public StageBuildDto getStageBuildById(Long stageBuildId) {
-        StageBuild build = stageBuildRepository.findById(stageBuildId)
+        StageBuild stageBuild = stageBuildRepository.findById(stageBuildId)
             .orElseThrow(() ->
                 new ResourceNotFoundException("StageBuild with id " + stageBuildId + " does not exist."));
-        return StageBuildMapper.mapToStageBuildDto(build);
+        return StageBuildMapper.mapToStageBuildDto(stageBuild);
     }
 
     public StageBuildDto getStageBuildByName(String stageBuildName) {
-        StageBuild build = stageBuildRepository.findByName(stageBuildName)
+        StageBuild stageBuild = stageBuildRepository.findByName(stageBuildName)
             .orElseThrow(() ->
                 new ResourceNotFoundException("StageBuild with id " + stageBuildName + " does not exist."));
-        return StageBuildMapper.mapToStageBuildDto(build);
+        return StageBuildMapper.mapToStageBuildDto(stageBuild);
+    }
+
+    public StageBuildDto getStageBuildByStageAndBuildId(Long stageId, Long buildId) {
+        StageBuild stageBuild = stageBuildRepository.findByStageAndBuildId(stageId, buildId)
+            .orElseThrow(() ->
+                new ResourceNotFoundException("StageBuild does not exist."));
+        return StageBuildMapper.mapToStageBuildDto(stageBuild);
     }
 }

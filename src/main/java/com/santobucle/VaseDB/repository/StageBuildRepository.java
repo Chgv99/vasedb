@@ -20,5 +20,8 @@ public interface StageBuildRepository extends JpaRepository<StageBuild, Long> {
     Optional<StageBuild> saveWithJsonCast(@Param("buildId") Long buildId, 
                         @Param("stageId") Long stageId,
                         @Param("duration") int duration, 
-                        @Param("qualifierData") String qualifierData);
+            @Param("qualifierData") String qualifierData);
+                        
+    @Query(value = "SELECT * FROM stage_build WHERE stage_id = ?1 and build_id = ?2", nativeQuery = true)
+    Optional<StageBuild> findByStageAndBuildId(@Param("stageId") Long stageId, @Param("buildId") Long buildId);
 }

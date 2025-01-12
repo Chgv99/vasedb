@@ -24,6 +24,10 @@ import lombok.Setter;
 @Entity
 @Table(name = "StageBuild")
 public class StageBuild {
+
+    /** TODO: CREATE PRIMARY KEY OUT OF STAGE AND BUILD (AND ID?)
+     * TO HELP IDENTIFY STAGEBUILDS AND AVOID DUPLICATES */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
