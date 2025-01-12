@@ -32,11 +32,11 @@ public class StageBuildMapper {
     }
     
     public static StageBuild mapToStageBuild(StageBuildDto stageBuildDto) {
-        String json = "";
+        String qualifierDataListJson = "";
         // Serialization
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            json = objectMapper.writeValueAsString(stageBuildDto.getQualifierData());
+            qualifierDataListJson = objectMapper.writeValueAsString(stageBuildDto.getQualifierData());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -46,7 +46,7 @@ public class StageBuildMapper {
             StageMapper.mapToStage(stageBuildDto.getStageDto()),
             BuildMapper.mapToBuild(stageBuildDto.getBuildDto()),
             stageBuildDto.getDuration(),
-            json,
+            qualifierDataListJson,
             new ArrayList<Resolution>()
         );
     }
