@@ -35,7 +35,7 @@ public class ResolutionServiceImpl implements ResolutionService {
             resolution.getStageBuild().getId(),
             resolution.getElapsedTime(),
             resolution.getSpeedQualifier(),
-            resolution.getVaseAttributes(),
+            resolution.getVaseAttributesDto(),
             resolution.getDate());
         return ResolutionMapper.mapToResolutionDto(savedResolution.orElseThrow(() -> 
             new IllegalStateException("Resolution could not be saved successfully")));

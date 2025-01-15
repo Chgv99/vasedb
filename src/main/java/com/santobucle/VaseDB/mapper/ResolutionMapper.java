@@ -30,7 +30,7 @@ public class ResolutionMapper {
         // Deserialization
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            vaseAttributesDto = objectMapper.readValue(resolution.getVaseAttributes(), new TypeReference<VaseAttributesDto>() {});
+            vaseAttributesDto = objectMapper.readValue(resolution.getVaseAttributesDto(), new TypeReference<VaseAttributesDto>() {});
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -50,7 +50,7 @@ public class ResolutionMapper {
         //Serialization
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            vaseAttributesJson = objectMapper.writeValueAsString(resolutionDto.getVaseAttributes());
+            vaseAttributesJson = objectMapper.writeValueAsString(resolutionDto.getVaseAttributesDto());
         } catch (Exception e) {
             e.printStackTrace();
         }
