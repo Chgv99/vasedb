@@ -36,7 +36,19 @@ public class Build {
     @OneToMany(mappedBy = "build", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StageBuild> stageBuilds;
 
-    // public void addStageBuildDto(StageBuildDto stageBuildDto) {
-    //     stageBuilds.add(stageBuildDto);
-    // }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Build build = (Build) o;
+        return id != null && id.equals(build.id)
+                && version.equals(build.version);
+    }
+    
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

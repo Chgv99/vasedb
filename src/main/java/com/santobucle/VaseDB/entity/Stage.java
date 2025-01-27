@@ -38,5 +38,19 @@ public class Stage {
         this.name = name;
     }
 
-    // TODO: ADD FIELDS FOR SPEED QUALIFIER TIME INFORMATION
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Stage stage = (Stage) o;
+        return id != null && id.equals(stage.id)
+                && name.equals(stage.name);
+    }
+    
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

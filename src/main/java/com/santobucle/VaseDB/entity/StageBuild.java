@@ -32,11 +32,11 @@ public class StageBuild {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "stage_id", nullable = false)
     private Stage stage;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "build_id", nullable = false)
     private Build build;
 

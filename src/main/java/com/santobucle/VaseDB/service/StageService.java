@@ -9,9 +9,11 @@ public interface StageService {
 
     public StageDto createStage(Stage stage);
 
-    public StageDto addStageBuildToList(StageDto stageDto, StageBuildDto stageBuildDto);
-
     public StageDto getStageById(Long stageId);
 
     public StageDto getStageByName(String stageName);
+
+    public Stage getStage(Stage stage);
+
+    public Stage resolveStage(Stage stage);
 }

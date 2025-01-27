@@ -9,9 +9,11 @@ public interface BuildService {
 
     public BuildDto createBuild(Build build);
 
-    public BuildDto addStageBuildToList(BuildDto buildDto, StageBuildDto stageBuildDto);
-
     public BuildDto getBuildById(Long buildId);
 
     public BuildDto getBuildByName(String buildName);
+
+    public Build getBuild(Build build);
+
+    public Build resolveBuild(Build build);
 }

@@ -38,16 +38,6 @@ public class StageServiceImpl implements StageService {
         return StageMapper.mapToStageDto(savedStage);
     }
 
-    @Override
-    public StageDto addStageBuildToList(StageDto stageDto, StageBuildDto stageBuildDto) {
-        Stage stage = StageMapper.mapToStage(stageDto);
-        List<StageBuild> stageBuilds = stage.getStageBuilds();
-        if (stageBuilds == null)
-            stageBuilds = new ArrayList<StageBuild>();
-        stageBuilds.add(StageBuildMapper.mapToStageBuild(stageBuildDto));
-        stage.setStageBuilds(stageBuilds);
-        return createStage(stage);
-    }
 
     @Override
     public StageDto getStageById(Long stageId) {
@@ -60,9 +50,20 @@ public class StageServiceImpl implements StageService {
     @Override
     public StageDto getStageByName(String stageName) {
         Stage stage = stageRepository.findByName(stageName)
-            .orElseThrow(() -> 
-                new ResourceNotFoundException("Stage with name '" + stageName + "'' does not exist."));
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Stage with name '" + stageName + "'' does not exist."));
         return StageMapper.mapToStageDto(stage);
+    }
+
+    @Override
+    public Stage getStage(Stage stage) {
+        return stageRepository.findByName(stage.getName()).orElse(null);
+    }
+    
+    @Override
+    public Stage resolveStage(Stage stage) {
+        return stageRepository.findByName(stage.getName())
+                .orElseGet(() -> stageRepository.save(stage));
     }
 
     private String getFormattedName(String name) {

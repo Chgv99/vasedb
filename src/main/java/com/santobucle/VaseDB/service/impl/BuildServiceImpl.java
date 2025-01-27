@@ -42,29 +42,27 @@ public class BuildServiceImpl implements BuildService {
     }
 
     @Override
-    public BuildDto addStageBuildToList(BuildDto buildDto, StageBuildDto stageBuildDto) {
-        Build build = BuildMapper.mapToBuild(buildDto);
-        List<StageBuild> stageBuilds = build.getStageBuilds();
-        if (stageBuilds == null)
-            stageBuilds = new ArrayList<StageBuild>();
-        stageBuilds.add(StageBuildMapper.mapToStageBuild(stageBuildDto));
-        build.setStageBuilds(stageBuilds);
-        return createBuild(build);
-    }
-
-    @Override
     public BuildDto getBuildById(Long buildId) {
         Build build = buildRepository.findById(buildId)
-                .orElseThrow(() -> 
-                    new ResourceNotFoundException("Build with id " + buildId + " does not exist."));
+                .orElseThrow(() -> new ResourceNotFoundException("Build with id " + buildId + " does not exist."));
         return BuildMapper.mapToBuildDto(build);
     }
 
     @Override
     public BuildDto getBuildByName(String buildName) {
         Build build = buildRepository.findByName(buildName)
-                .orElseThrow(() -> 
-                    new ResourceNotFoundException("Build with name " + buildName + " does not exist."));
+                .orElseThrow(() -> new ResourceNotFoundException("Build with name " + buildName + " does not exist."));
         return BuildMapper.mapToBuildDto(build);
+    }
+    
+    @Override
+    public Build getBuild(Build build) {
+        return buildRepository.findByName(build.getVersion()).orElse(null);
+    }
+
+    @Override
+    public Build resolveBuild(Build build) {
+        return buildRepository.findByName(build.getVersion())
+                .orElseGet(() -> buildRepository.save(build));
     }
 }

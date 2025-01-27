@@ -2,6 +2,7 @@ package com.santobucle.VaseDB.entity;
 
 import java.util.Date;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,8 +27,13 @@ public class Resolution {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Foreign key
+    // @JsonIgnore
     @ManyToOne
+    @JoinColumn(name = "game_id") // , nullable = false, columnDefinition = new Game(-1l, -1f, new ArrayList<Resolution>(), new Date())
+    private Game game;
+    
+    // Foreign key
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "stage_build_id", nullable = false)
     private StageBuild stageBuild;
 

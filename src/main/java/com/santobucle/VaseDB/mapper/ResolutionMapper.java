@@ -1,31 +1,19 @@
 package com.santobucle.VaseDB.mapper;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.santobucle.VaseDB.dto.BuildDto;
 import com.santobucle.VaseDB.dto.ResolutionDto;
-import com.santobucle.VaseDB.dto.StageDto;
 import com.santobucle.VaseDB.dto.VaseAttributesDto;
 import com.santobucle.VaseDB.entity.Resolution;
-import com.santobucle.VaseDB.entity.StageBuild;
-import com.santobucle.VaseDB.service.BuildService;
-import com.santobucle.VaseDB.service.StageService;
 
+@Component
 public class ResolutionMapper {
 
-    @Autowired
-    static StageService stageService;
-
-    @Autowired
-    static BuildService buildService;
-
-    public static ResolutionDto mapToResolutionDto(Resolution resolution) {
+    public ResolutionDto mapToResolutionDto(Resolution resolution) {
         VaseAttributesDto vaseAttributesDto = new VaseAttributesDto();
         // Deserialization
         try {
@@ -37,6 +25,7 @@ public class ResolutionMapper {
 
         return new ResolutionDto(
             resolution.getId(),
+            // resolution.getGame() == null ? null : resolution.getGame().getId(),   
             StageBuildMapper.mapToStageBuildDto(resolution.getStageBuild()),
             resolution.getElapsedTime(),
             resolution.getSpeedQualifier(),
@@ -45,7 +34,7 @@ public class ResolutionMapper {
         );
     }
 
-    public static Resolution mapToResolution(ResolutionDto resolutionDto) {
+    public Resolution mapToResolution(ResolutionDto resolutionDto) {
         String vaseAttributesJson = "";
         //Serialization
         try {
@@ -56,7 +45,8 @@ public class ResolutionMapper {
         }
 
         return new Resolution(
-            resolutionDto.getId(), 
+            resolutionDto.getId(),
+            null, //gameService.findGameById(resolutionDto.getGameId()),
             StageBuildMapper.mapToStageBuild(resolutionDto.getStageBuildDto()),
             resolutionDto.getElapsedTime(),
             resolutionDto.getSpeedQualifier(),
