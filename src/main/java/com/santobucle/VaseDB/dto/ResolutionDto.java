@@ -13,6 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ResolutionDto {
     private Long id;
+    // private Long gameId;
     private StageBuildDto stageBuildDto;
     private double elapsedTime;
     private String speedQualifier;
