@@ -8,15 +8,13 @@ import org.springframework.stereotype.Component;
 
 import com.santobucle.VaseDB.dto.GameDto;
 import com.santobucle.VaseDB.dto.ResolutionDto;
+import com.santobucle.VaseDB.dto.response.GameResponse;
 import com.santobucle.VaseDB.entity.Game;
 import com.santobucle.VaseDB.entity.Resolution;
 import com.santobucle.VaseDB.service.ResolutionService;
 
 @Component
 public class GameMapper {
-
-    @Autowired
-    private ResolutionService resolutionService;
 
     @Autowired
     private ResolutionMapper resolutionMapper;
@@ -37,16 +35,23 @@ public class GameMapper {
     
     public Game mapToGame(GameDto gameDto) throws NullPointerException {
         List<Resolution> resolutionList = new ArrayList<>();
-        
+
         for (ResolutionDto resolutionDto : gameDto.getResolutions()) {
             Resolution resolution = resolutionMapper.mapToResolution(resolutionDto);
             resolutionList.add(resolution);
         }
 
         return new Game(
+                gameDto.getId(),
+                gameDto.getTotalTime(),
+                resolutionList,
+                gameDto.getDate());
+    }
+    
+    public GameResponse mapToGameResponse(GameDto gameDto) {
+        return new GameResponse(
             gameDto.getId(),
             gameDto.getTotalTime(),
-            resolutionList,
             gameDto.getDate()
         );
     }

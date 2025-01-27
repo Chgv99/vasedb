@@ -1,4 +1,6 @@
-package com.santobucle.VaseDB.dto;
+package com.santobucle.VaseDB.dto.response;
+
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +11,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BuildDto {
+public class GameResponse {
     private Long id;
-    private String version;
+    private float totalTime;
+    private Date date;
 }
