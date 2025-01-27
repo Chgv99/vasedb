@@ -1,16 +1,14 @@
 package com.santobucle.VaseDB.service.impl;
 
-import java.util.Optional;
+import java.util.Date;
 
 import org.springframework.stereotype.Service;
 
 import com.santobucle.VaseDB.dto.ResolutionDto;
-import com.santobucle.VaseDB.dto.StageBuildDto;
 import com.santobucle.VaseDB.entity.Resolution;
 import com.santobucle.VaseDB.entity.StageBuild;
 import com.santobucle.VaseDB.exception.ResourceNotFoundException;
 import com.santobucle.VaseDB.mapper.ResolutionMapper;
-import com.santobucle.VaseDB.mapper.StageBuildMapper;
 import com.santobucle.VaseDB.repository.ResolutionRepository;
 import com.santobucle.VaseDB.service.ResolutionService;
 import com.santobucle.VaseDB.service.StageBuildService;
@@ -30,18 +28,12 @@ public class ResolutionServiceImpl implements ResolutionService {
     @Override
     public ResolutionDto createResolution(ResolutionDto resolutionDto) {
         Resolution resolution = resolutionMapper.mapToResolution(resolutionDto);
+        
         StageBuild savedStageBuild = stageBuildService
                 .resolveStageBuild(resolution.getStageBuild());
         resolution.setStageBuild(savedStageBuild);
-        Optional<Resolution> savedResolution = resolutionRepository.saveWithJsonCast(
-            resolution.getGame() == null ? null : resolution.getGame().getId(),
-            resolution.getStageBuild().getId(),
-            resolution.getElapsedTime(),
-            resolution.getSpeedQualifier(),
-            resolution.getVaseAttributesDto(),
-            resolution.getDate());
-        return resolutionMapper.mapToResolutionDto(savedResolution.orElseThrow(() -> 
-            new IllegalStateException("Resolution could not be saved successfully")));
+        Resolution savedResolution = saveWithJsonCast(resolution);
+        return resolutionMapper.mapToResolutionDto(savedResolution);
     }
 
     @Override
