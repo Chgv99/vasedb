@@ -51,7 +51,7 @@ public class ResolutionMapper {
             resolutionDto.getElapsedTime(),
             resolutionDto.getSpeedQualifier(),
             vaseAttributesJson,
-            resolutionDto.getDate() != null ? resolutionDto.getDate() : new Date()
+            resolutionDto.getDate()
         );
     }
 }
