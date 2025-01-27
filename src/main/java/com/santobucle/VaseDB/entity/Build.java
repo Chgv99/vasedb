@@ -30,9 +30,6 @@ public class Build {
     @Column(name = "name", nullable = false, unique = true)
     private String version;
 
-    @Column(name = "released_at")
-    private Date releaseDate;
-
     @OneToMany(mappedBy = "build", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StageBuild> stageBuilds;
 

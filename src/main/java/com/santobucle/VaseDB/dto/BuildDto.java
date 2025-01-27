@@ -14,6 +14,4 @@ import lombok.Setter;
 public class BuildDto {
     private Long id;
     private String version;
-    private Date releaseDate;
-    // private List<StageBuild> stageBuilds;
 }

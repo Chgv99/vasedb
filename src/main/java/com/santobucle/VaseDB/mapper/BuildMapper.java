@@ -8,8 +8,7 @@ public class BuildMapper {
     public static BuildDto mapToBuildDto(Build build) {
         return new BuildDto(
             build.getId(),
-            build.getVersion(),
-            build.getReleaseDate()
+            build.getVersion()
         );
     }
     
@@ -17,7 +16,6 @@ public class BuildMapper {
         return new Build(
             buildDto.getId(),
             buildDto.getVersion(),
-            buildDto.getReleaseDate(),
             null
         );
     }
