@@ -1,0 +1,44 @@
+services:
+  db:
+    image: postgres:15
+    container_name: VaseDB
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+      - ./create-dbs.sh:/docker-entrypoint-initdb.d/create-dbs.sh
+    ports:
+      - "${DB_PORT}:5432"
+
+  pgadmin4:
+    image: elestio/pgadmin
+    container_name: PGAdmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      PGADMIN_LISTEN_PORT: ${PGADMIN_LISTEN_PORT}
+    ports:
+    - "${PGADMIN_LISTEN_PORT}:8080"
+    volumes:
+    - ./servers.json:/pgadmin4/servers.json
+
+  metabase:
+    image: metabase/metabase:latest
+    container_name: MetaVase
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: ${METABASE_DBNAME}
+      MB_DB_PORT: ${DB_PORT}
+      MB_DB_USER: ${METABASE_USER}
+      MB_DB_PASS: ${METABASE_PASS}
+      MB_DB_HOST: ${METABASE_HOST}
+    ports:
+      - "${METABASE_PORT}:3000"
+    depends_on:
+      - db
+
+volumes:
+  postgresql_data:
