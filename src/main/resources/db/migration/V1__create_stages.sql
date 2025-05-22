@@ -8,6 +8,6 @@ VALUES
     ('Pitch'),
     ('Blackout');
 
-INSERT INTO build(name, released_at)
+INSERT INTO build(name)
 VALUES
-    ('dbtest 0.0.1', NOW());
+    ('dbtest 0.0.1');
