@@ -30,7 +30,7 @@ public class StageController {
     }
 
     @GetMapping("{stageName}")
-    public ResponseEntity<StageDto> getStageById(@PathVariable String stageName) {
+    public ResponseEntity<StageDto> getStageByName(@PathVariable String stageName) {
         StageDto stageDto = stageService.getStageByName(stageName);
         return ResponseEntity.ok(stageDto);
     }
