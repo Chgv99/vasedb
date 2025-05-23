@@ -14,7 +14,6 @@ import lombok.Setter;
 public class ResolutionDto {
     private Long id;
     // private Long gameId;
-    private StageBuildDto stageBuildDto;
     private double elapsedTime;
     private String speedQualifier;
     private VaseAttributesDto vaseAttributesDto;

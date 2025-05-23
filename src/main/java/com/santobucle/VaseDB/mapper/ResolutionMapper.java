@@ -26,7 +26,6 @@ public class ResolutionMapper {
         return new ResolutionDto(
             resolution.getId(),
             // resolution.getGame() == null ? null : resolution.getGame().getId(),   
-            StageBuildMapper.mapToStageBuildDto(resolution.getStageBuild()),
             resolution.getElapsedTime(),
             resolution.getSpeedQualifier(),
             vaseAttributesDto,
@@ -47,7 +46,6 @@ public class ResolutionMapper {
         return new Resolution(
             resolutionDto.getId(),
             null, //gameService.findGameById(resolutionDto.getGameId()),
-            StageBuildMapper.mapToStageBuild(resolutionDto.getStageBuildDto()),
             resolutionDto.getElapsedTime(),
             resolutionDto.getSpeedQualifier(),
             vaseAttributesJson,

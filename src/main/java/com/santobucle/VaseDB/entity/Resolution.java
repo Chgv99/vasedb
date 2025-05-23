@@ -31,11 +31,6 @@ public class Resolution {
     @ManyToOne
     @JoinColumn(name = "game_id") // , nullable = false, columnDefinition = new Game(-1l, -1f, new ArrayList<Resolution>(), new Date())
     private Game game;
-    
-    // Foreign key
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "stage_build_id", nullable = false)
-    private StageBuild stageBuild;
 
     @Column(name = "elapsed_time")
     private double elapsedTime;

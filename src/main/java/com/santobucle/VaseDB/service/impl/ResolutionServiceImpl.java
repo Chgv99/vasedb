@@ -6,12 +6,10 @@ import org.springframework.stereotype.Service;
 
 import com.santobucle.VaseDB.dto.ResolutionDto;
 import com.santobucle.VaseDB.entity.Resolution;
-import com.santobucle.VaseDB.entity.StageBuild;
 import com.santobucle.VaseDB.exception.ResourceNotFoundException;
 import com.santobucle.VaseDB.mapper.ResolutionMapper;
 import com.santobucle.VaseDB.repository.ResolutionRepository;
 import com.santobucle.VaseDB.service.ResolutionService;
-import com.santobucle.VaseDB.service.StageBuildService;
 
 import lombok.AllArgsConstructor;
 
@@ -21,17 +19,12 @@ public class ResolutionServiceImpl implements ResolutionService {
 
     private ResolutionRepository resolutionRepository;
 
-    private StageBuildService stageBuildService;
-
     private ResolutionMapper resolutionMapper;
 
     @Override
     public ResolutionDto createResolution(ResolutionDto resolutionDto) {
         Resolution resolution = resolutionMapper.mapToResolution(resolutionDto);
         
-        StageBuild savedStageBuild = stageBuildService
-                .resolveStageBuild(resolution.getStageBuild());
-        resolution.setStageBuild(savedStageBuild);
         Resolution savedResolution = saveWithJsonCast(resolution);
         return resolutionMapper.mapToResolutionDto(savedResolution);
     }
@@ -53,7 +46,6 @@ public class ResolutionServiceImpl implements ResolutionService {
     public Resolution saveWithJsonCast(Resolution resolution) throws IllegalStateException {
         Resolution savedResolution = resolutionRepository.saveWithJsonCast(
             resolution.getGame().getId(),
-            resolution.getStageBuild().getId(),
             resolution.getElapsedTime(),
             resolution.getSpeedQualifier(),
             resolution.getVaseAttributesDto(),

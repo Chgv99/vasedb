@@ -12,5 +12,4 @@ import lombok.Setter;
 public class StageDto {
     private Long id;
     private String name;
-    // private List<StageBuildDto> stageBuilds;
 }
