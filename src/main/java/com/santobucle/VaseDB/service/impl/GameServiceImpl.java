@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.santobucle.VaseDB.dto.BuildDto;
 import com.santobucle.VaseDB.dto.GameDto;
 import com.santobucle.VaseDB.entity.Build;
 import com.santobucle.VaseDB.entity.Game;
 import com.santobucle.VaseDB.entity.Resolution;
 import com.santobucle.VaseDB.entity.Stage;
+import com.santobucle.VaseDB.mapper.BuildMapper;
 import com.santobucle.VaseDB.mapper.GameMapper;
 import com.santobucle.VaseDB.mapper.ResolutionMapper;
 import com.santobucle.VaseDB.repository.GameRepository;
@@ -41,7 +43,10 @@ public class GameServiceImpl implements GameService {
     }
 
     private GameDto save(Game game) {
-        gameRepository.save(game);
+        BuildDto buildDto = buildService.createBuild(game.getBuild());
+        
+        game.setBuild(BuildMapper.mapToBuild(buildDto));
+        Game savedGame = gameRepository.save(game);
 
         List<Resolution> savedResolutions = new ArrayList<Resolution>();
         for (Resolution resolution : game.getResolutions()) {

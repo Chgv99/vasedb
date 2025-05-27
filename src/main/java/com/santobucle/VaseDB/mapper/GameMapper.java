@@ -19,6 +19,9 @@ public class GameMapper {
     @Autowired
     private ResolutionMapper resolutionMapper;
 
+    @Autowired
+    private ResolutionService resolutionService;
+
     public GameDto mapToGameDto(Game game) throws NullPointerException {
         List<ResolutionDto> resolutionDtoList = new ArrayList<>();
         for (Resolution resolution : game.getResolutions()) {
@@ -28,6 +31,7 @@ public class GameMapper {
         return new GameDto(
             game.getId(),
             game.getTotalTime(),
+            BuildMapper.mapToBuildDto(game.getBuild()),
             resolutionDtoList,
             game.getDate()
         );
@@ -44,6 +48,7 @@ public class GameMapper {
         return new Game(
                 gameDto.getId(),
                 gameDto.getTotalTime(),
+                BuildMapper.mapToBuild(gameDto.getBuild()),
                 resolutionList,
                 gameDto.getDate());
     }
