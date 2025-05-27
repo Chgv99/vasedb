@@ -11,16 +11,12 @@ import com.santobucle.VaseDB.dto.ResolutionDto;
 import com.santobucle.VaseDB.dto.response.GameResponse;
 import com.santobucle.VaseDB.entity.Game;
 import com.santobucle.VaseDB.entity.Resolution;
-import com.santobucle.VaseDB.service.ResolutionService;
 
 @Component
 public class GameMapper {
 
     @Autowired
     private ResolutionMapper resolutionMapper;
-
-    @Autowired
-    private ResolutionService resolutionService;
 
     public GameDto mapToGameDto(Game game) throws NullPointerException {
         List<ResolutionDto> resolutionDtoList = new ArrayList<>();
@@ -29,14 +25,13 @@ public class GameMapper {
         }
 
         return new GameDto(
-            game.getId(),
-            game.getTotalTime(),
-            BuildMapper.mapToBuildDto(game.getBuild()),
-            resolutionDtoList,
-            game.getDate()
-        );
+                game.getId(),
+                game.getTotalTime(),
+                BuildMapper.mapToBuildDto(game.getBuild()),
+                resolutionDtoList,
+                game.getDate());
     }
-    
+
     public Game mapToGame(GameDto gameDto) throws NullPointerException {
         List<Resolution> resolutionList = new ArrayList<>();
 
@@ -52,12 +47,11 @@ public class GameMapper {
                 resolutionList,
                 gameDto.getDate());
     }
-    
+
     public GameResponse mapToGameResponse(GameDto gameDto) {
         return new GameResponse(
-            gameDto.getId(),
-            gameDto.getTotalTime(),
-            gameDto.getDate()
-        );
+                gameDto.getId(),
+                gameDto.getTotalTime(),
+                gameDto.getDate());
     }
 }

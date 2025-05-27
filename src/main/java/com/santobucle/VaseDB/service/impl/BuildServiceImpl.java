@@ -30,8 +30,13 @@ public class BuildServiceImpl implements BuildService {
 
     @Override
     public BuildDto createBuild(Build build) {
-        Build savedBuild = buildRepository.save(build);
-        return BuildMapper.mapToBuildDto(savedBuild);
+        BuildDto savedBuildDto;
+        try {
+            savedBuildDto = getBuildByName(build.getVersion());
+        } catch (ResourceNotFoundException e) {
+            savedBuildDto = createBuild(build);
+        }
+        return savedBuildDto;
     }
 
     @Override
@@ -47,7 +52,7 @@ public class BuildServiceImpl implements BuildService {
                 .orElseThrow(() -> new ResourceNotFoundException("Build with name " + buildName + " does not exist."));
         return BuildMapper.mapToBuildDto(build);
     }
-    
+
     @Override
     public Build getBuild(Build build) {
         return buildRepository.findByName(build.getVersion()).orElse(null);

@@ -35,7 +35,7 @@ public class Build {
         return id != null && id.equals(build.id)
                 && version.equals(build.version);
     }
-    
+
     @Override
     public int hashCode() {
         return getClass().hashCode();

@@ -15,12 +15,11 @@ import com.santobucle.VaseDB.service.GameService;
 
 import lombok.AllArgsConstructor;
 
-
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/game")
 public class GameController {
-    
+
     @Autowired
     private GameService gameService;
 
@@ -37,5 +36,5 @@ public class GameController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-    
+
 }

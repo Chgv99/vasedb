@@ -1,4 +1,5 @@
 package com.santobucle.VaseDB.config;
+
 import javax.sql.DataSource;
 
 import org.flywaydb.core.Flyway;
@@ -12,6 +13,5 @@ public class FlywayConfiguration {
     public FlywayConfiguration(DataSource dataSource) {
         Flyway.configure().baselineOnMigrate(true).baselineVersion("0").dataSource(dataSource).load().migrate();
     }
-
 
 }

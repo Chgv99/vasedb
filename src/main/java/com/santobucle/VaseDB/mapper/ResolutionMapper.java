@@ -1,7 +1,5 @@
 package com.santobucle.VaseDB.mapper;
 
-import java.util.Date;
-
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -18,24 +16,25 @@ public class ResolutionMapper {
         // Deserialization
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            vaseAttributesDto = objectMapper.readValue(resolution.getVaseAttributesDto(), new TypeReference<VaseAttributesDto>() {});
+            vaseAttributesDto = objectMapper.readValue(resolution.getVaseAttributesDto(),
+                    new TypeReference<VaseAttributesDto>() {
+                    });
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return new ResolutionDto(
-            resolution.getId(),
-            // resolution.getGame() == null ? null : resolution.getGame().getId(),   
-            resolution.getElapsedTime(),
-            resolution.getSpeedQualifier(),
-            vaseAttributesDto,
-            resolution.getDate()
-        );
+                resolution.getId(),
+                // resolution.getGame() == null ? null : resolution.getGame().getId(),
+                resolution.getElapsedTime(),
+                resolution.getSpeedQualifier(),
+                vaseAttributesDto,
+                resolution.getDate());
     }
 
     public Resolution mapToResolution(ResolutionDto resolutionDto) {
         String vaseAttributesJson = "";
-        //Serialization
+        // Serialization
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             vaseAttributesJson = objectMapper.writeValueAsString(resolutionDto.getVaseAttributesDto());
@@ -44,12 +43,11 @@ public class ResolutionMapper {
         }
 
         return new Resolution(
-            resolutionDto.getId(),
-            null, //gameService.findGameById(resolutionDto.getGameId()),
-            resolutionDto.getElapsedTime(),
-            resolutionDto.getSpeedQualifier(),
-            vaseAttributesJson,
-            resolutionDto.getDate()
-        );
+                resolutionDto.getId(),
+                null, // gameService.findGameById(resolutionDto.getGameId()),
+                resolutionDto.getElapsedTime(),
+                resolutionDto.getSpeedQualifier(),
+                vaseAttributesJson,
+                resolutionDto.getDate());
     }
 }

@@ -1,7 +1,5 @@
 package com.santobucle.VaseDB.service.impl;
 
-import java.util.Date;
-
 import org.springframework.stereotype.Service;
 
 import com.santobucle.VaseDB.dto.ResolutionDto;
@@ -24,7 +22,7 @@ public class ResolutionServiceImpl implements ResolutionService {
     @Override
     public ResolutionDto createResolution(ResolutionDto resolutionDto) {
         Resolution resolution = resolutionMapper.mapToResolution(resolutionDto);
-        
+
         Resolution savedResolution = saveWithJsonCast(resolution);
         return resolutionMapper.mapToResolutionDto(savedResolution);
     }
@@ -36,23 +34,23 @@ public class ResolutionServiceImpl implements ResolutionService {
                         () -> new ResourceNotFoundException("Resolution with id " + resolutionId + " does not exist."));
         return resolutionMapper.mapToResolutionDto(resolution);
     }
-    
+
     @Override
     public Resolution save(Resolution resolution) {
         return resolutionRepository.save(resolution);
     }
-    
+
     @Override
     public Resolution saveWithJsonCast(Resolution resolution) throws IllegalStateException {
         Resolution savedResolution = resolutionRepository.saveWithJsonCast(
-            resolution.getGame().getId(),
-            resolution.getElapsedTime(),
-            resolution.getSpeedQualifier(),
-            resolution.getVaseAttributesDto(),
-            resolution.getDate()).orElseThrow(() ->
-                new IllegalStateException("An error has ocurred when trying to save Resolution."));
-                // return resolutionMapper.mapToResolutionDto(savedResolution);
-                return savedResolution;
+                resolution.getGame().getId(),
+                resolution.getElapsedTime(),
+                resolution.getSpeedQualifier(),
+                resolution.getVaseAttributesDto(),
+                resolution.getDate())
+                .orElseThrow(() -> new IllegalStateException("An error has ocurred when trying to save Resolution."));
+        // return resolutionMapper.mapToResolutionDto(savedResolution);
+        return savedResolution;
     }
 
 }

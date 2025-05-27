@@ -36,7 +36,7 @@ public class Stage {
         return id != null && id.equals(stage.id)
                 && name.equals(stage.name);
     }
-    
+
     @Override
     public int hashCode() {
         return getClass().hashCode();

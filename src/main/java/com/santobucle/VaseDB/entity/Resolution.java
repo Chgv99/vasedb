@@ -2,7 +2,6 @@ package com.santobucle.VaseDB.entity;
 
 import java.util.Date;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,7 +28,8 @@ public class Resolution {
 
     // @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "game_id") // , nullable = false, columnDefinition = new Game(-1l, -1f, new ArrayList<Resolution>(), new Date())
+    @JoinColumn(name = "game_id") // , nullable = false, columnDefinition = new Game(-1l, -1f, new
+                                  // ArrayList<Resolution>(), new Date())
     private Game game;
 
     @Column(name = "elapsed_time")
@@ -37,10 +37,10 @@ public class Resolution {
 
     @Column(name = "speed_qualifier")
     private String speedQualifier;
-    
+
     @Column(name = "vase_attributes", columnDefinition = "json")
     private String vaseAttributesDto;
 
-    @Column(name="solved_at")
+    @Column(name = "solved_at")
     private Date date;
 }

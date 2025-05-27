@@ -26,18 +26,16 @@ public class StageServiceImpl implements StageService {
         Stage stage = StageMapper.mapToStage(stageDto);
         return createStage(stage);
     }
-    
+
     public StageDto createStage(Stage stage) {
         Stage savedStage = stageRepository.save(stage);
         return StageMapper.mapToStageDto(savedStage);
     }
 
-
     @Override
     public StageDto getStageById(Long stageId) {
         Stage stage = stageRepository.findById(stageId)
-            .orElseThrow(() -> 
-                new ResourceNotFoundException("Stage with id " + stageId + " does not exist."));
+                .orElseThrow(() -> new ResourceNotFoundException("Stage with id " + stageId + " does not exist."));
         return StageMapper.mapToStageDto(stage);
     }
 
@@ -53,7 +51,7 @@ public class StageServiceImpl implements StageService {
     public Stage getStage(Stage stage) {
         return stageRepository.findByName(stage.getName()).orElse(null);
     }
-    
+
     @Override
     public Stage resolveStage(Stage stage) {
         return stageRepository.findByName(stage.getName())
