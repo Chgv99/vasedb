@@ -7,16 +7,13 @@ public class BuildMapper {
 
     public static BuildDto mapToBuildDto(Build build) {
         return new BuildDto(
-            build.getId(),
-            build.getVersion()
-        );
+                build.getId(),
+                build.getVersion());
     }
-    
+
     public static Build mapToBuild(BuildDto buildDto) {
         return new Build(
-            buildDto.getId(),
-            buildDto.getVersion(),
-            null
-        );
+                buildDto.getId(),
+                buildDto.getVersion());
     }
 }
