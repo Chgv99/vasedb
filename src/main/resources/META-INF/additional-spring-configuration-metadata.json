@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "vasedb.api.key",
+      "type": "java.lang.String",
+      "description": "Key to connect with this API"
+    },
+    {
+      "name": "vasedb.client.url",
+      "type": "java.lang.String",
+      "description": "URL where the web client is hosted"
+    }
+  ]
+}
