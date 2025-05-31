@@ -1,0 +1,22 @@
+spring:
+  cache:
+    cache-names:
+      - rate-limit-buckets
+    jcache:
+      provider: com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider
+    caffeine:
+      spec: maximumSize=100000,expireAfterAccess=3600s
+
+bucket4j:
+  enabled: true
+  filters:
+    - cache-name: rate-limit-buckets
+      url: /api/game
+      http-status-code: TOO_MANY_REQUESTS
+      http-response-body: "{ \"error\": \"Too Many Requests\" }"
+      rate-limits:
+        - cache-key: getRemoteAddr()
+          bandwidths:
+            - capacity: ${VASEDB_API_PER_IP_CAP}
+              time: ${VASEDB_API_PER_IP_TIME}
+              unit: ${VASEDB_API_PER_IP_TIME_UNIT}
