@@ -11,7 +11,7 @@ bucket4j:
   enabled: true
   filters:
     - cache-name: rate-limit-buckets
-      url: /api/game
+      url: /api/.*
       http-status-code: TOO_MANY_REQUESTS
       http-response-body: "{ \"error\": \"Too Many Requests\" }"
       rate-limits:
