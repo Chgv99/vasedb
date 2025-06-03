@@ -40,7 +40,7 @@ services:
       - ${DB_NAME}
 
   vasedapi:
-    image: vasedb-api
+    image: chgv99/vasedb-api:latest #vasedb-api
     container_name: vasedb-api
     build:
       context: .
