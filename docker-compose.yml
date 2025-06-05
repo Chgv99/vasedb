@@ -1,16 +1,16 @@
 services:
-  datavase:
-    image: postgres:15
-    container_name: ${DB_NAME}
-    environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    volumes:
-      - postgresql_data:/var/lib/postgresql/data
-      - ./create-dbs.sh:/docker-entrypoint-initdb.d/create-dbs.sh
-    ports:
-      - "${DB_PORT}:5432"
+  # datavase:
+  #   image: postgres:15
+  #   container_name: ${DB_NAME}
+  #   environment:
+  #     POSTGRES_DB: ${DB_NAME}
+  #     POSTGRES_USER: ${POSTGRES_USER}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  #   volumes:
+  #     - postgresql_data:/var/lib/postgresql/data
+  #     - ./create-dbs.sh:/docker-entrypoint-initdb.d/create-dbs.sh
+  #   ports:
+  #     - "${DB_PORT}:5432"
 
   pgadmin4:
     image: elestio/pgadmin
