@@ -36,8 +36,6 @@ services:
       MB_DB_HOST: ${DB_NAME}
     ports:
       - "${METABASE_PORT}:3000"
-    depends_on:
-      - ${DB_NAME}
 
   vasedapi:
     image: chgv99/vasedb-api:latest #vasedb-api
@@ -57,8 +55,6 @@ services:
       VASEDB_API_PER_IP_CAP: ${VASEDB_API_PER_IP_CAP}
       VASEDB_API_PER_IP_TIME: ${VASEDB_API_PER_IP_TIME}
       VASEDB_API_PER_IP_TIME_UNIT: ${VASEDB_API_PER_IP_TIME_UNIT}
-    depends_on:
-      - ${DB_NAME}
 
 volumes:
   postgresql_data:
