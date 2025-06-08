@@ -32,7 +32,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           envs: DB_HOST,DB_USER,DB_PASSWORD
           script: |
-            cd /home/ubuntu/myapp
+            cd /home/ubuntu/vasedb
             export DB_HOST="${{ secrets.DB_HOST }}"
             export DB_USER="${{ secrets.POSTGRES_USER }}"
             export DB_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}"
