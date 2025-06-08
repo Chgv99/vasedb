@@ -1,16 +1,19 @@
 services:
-  # datavase:
-  #   image: postgres:15
-  #   container_name: ${DB_NAME}
-  #   environment:
-  #     POSTGRES_DB: ${DB_NAME}
-  #     POSTGRES_USER: ${POSTGRES_USER}
-  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-  #   volumes:
-  #     - postgresql_data:/var/lib/postgresql/data
-  #     - ./create-dbs.sh:/docker-entrypoint-initdb.d/create-dbs.sh
-  #   ports:
-  #     - "${DB_PORT}:5432"
+  datavase:
+    image: postgres:15
+    container_name: ${DB_NAME}
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      METABASE_DBNAME: ${METABASE_DBNAME}
+      METABASE_USER: ${METABASE_USER}
+      METABASE_PASS: ${METABASE_PASS}
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+      - ./create-dbs.sh:/docker-entrypoint-initdb.d/create-dbs.sh
+    ports:
+      - "${DB_PORT}:5432"
 
   pgadmin4:
     image: elestio/pgadmin
@@ -46,7 +49,7 @@ services:
     ports:
       - "${VASEDB_API_LISTEN_PORT}:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://datavase:${DB_PORT}/${DB_NAME}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
       VASEDB_API_LISTEN_PORT: ${VASEDB_API_LISTEN_PORT}
