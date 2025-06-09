@@ -3,7 +3,7 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
@@ -21,8 +21,8 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/your-image-name:latest .
-          docker push ${{ secrets.DOCKER_USERNAME }}/your-image-name:latest
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/vasedb-api:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/vasedb-api:latest
 
       - name: SSH into EC2 and deploy
         uses: appleboy/ssh-action@v1.0.0
@@ -32,9 +32,25 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           envs: DB_HOST,DB_USER,DB_PASSWORD
           script: |
-            cd /home/ubuntu/myapp
+            cd /home/ubuntu/vasedb
             export DB_HOST="${{ secrets.DB_HOST }}"
             export DB_USER="${{ secrets.POSTGRES_USER }}"
             export DB_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}"
+
+            # Write environment variables to .env
+            cat > .env <<EOF
+            DB_HOST=${{ secrets.DB_HOST }}
+            DB_PORT=${{ secrets.DB_PORT }}
+            DB_NAME=${{ secrets.DB_NAME }}
+            POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+            VASEDB_API_LISTEN_PORT=${{ secrets.VASEDB_API_LISTEN_PORT }}
+            VASEDB_API_KEY=${{ secrets.VASEDB_API_KEY }}
+            VASEDB_CLIENT_URL=${{ secrets.VASEDB_CLIENT_URL }}
+            VASEDB_API_PER_IP_CAP=${{ secrets.VASEDB_API_PER_IP_CAP }}
+            VASEDB_API_PER_IP_TIME=${{ secrets.VASEDB_API_PER_IP_TIME }}
+            VASEDB_API_PER_IP_TIME_UNIT=${{ secrets.VASEDB_API_PER_IP_TIME_UNIT }}
+            EOF
+            
             docker-compose pull
             docker-compose up -d
