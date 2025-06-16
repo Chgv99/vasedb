@@ -20,14 +20,8 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        // registry.addMapping("/**")
-        //         .allowedOrigins("*") // Allow all origins
-        //         .allowedMethods("*");
         registry.addMapping("/**")
-                .allowedOrigins(
-                    "http://localhost:50000",       // Adjust to match Unity editor's origin (TODO: REMOVE BEFORE DEPLOYING)
-                        "http://127.0.0.1:50000",              // Adjust to match Unity editor's origin (TODO: REMOVE BEFORE DEPLOYING)
-                        clientUrl)
+                .allowedOrigins("https://" + clientUrl)
                 .allowedMethods("*");
     }
 
