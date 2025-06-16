@@ -46,7 +46,7 @@ jobs:
             POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
             VASEDB_API_LISTEN_PORT=${{ secrets.VASEDB_API_LISTEN_PORT }}
             VASEDB_API_KEY=${{ secrets.VASEDB_API_KEY }}
-            VASEDB_CLIENT_URL=${{ secrets.VASEDB_CLIENT_URL }}
+            VASEDB_CLIENT_URL=${{ vars.VASEDB_CLIENT_URL }}
             VASEDB_API_PER_IP_CAP=${{ secrets.VASEDB_API_PER_IP_CAP }}
             VASEDB_API_PER_IP_TIME=${{ secrets.VASEDB_API_PER_IP_TIME }}
             VASEDB_API_PER_IP_TIME_UNIT=${{ secrets.VASEDB_API_PER_IP_TIME_UNIT }}
