@@ -44,6 +44,8 @@ public class ResolutionServiceImpl implements ResolutionService {
     public Resolution saveWithJsonCast(Resolution resolution) throws IllegalStateException {
         Resolution savedResolution = resolutionRepository.saveWithJsonCast(
                 resolution.getGame().getId(),
+                resolution.getDecision().name(),
+                resolution.getResult().name(),
                 resolution.getElapsedTime(),
                 resolution.getSpeedQualifier(),
                 resolution.getVaseAttributesDto(),

@@ -6,6 +6,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.santobucle.VaseDB.dto.ResolutionDto;
 import com.santobucle.VaseDB.dto.VaseAttributesDto;
+import com.santobucle.VaseDB.dto.enums.Decision;
+import com.santobucle.VaseDB.dto.enums.Result;
 import com.santobucle.VaseDB.entity.Resolution;
 
 @Component
@@ -25,7 +27,8 @@ public class ResolutionMapper {
 
         return new ResolutionDto(
                 resolution.getId(),
-                // resolution.getGame() == null ? null : resolution.getGame().getId(),
+                resolution.getDecision(),
+                resolution.getResult(),
                 resolution.getElapsedTime(),
                 resolution.getSpeedQualifier(),
                 vaseAttributesDto,
@@ -45,6 +48,8 @@ public class ResolutionMapper {
         return new Resolution(
                 resolutionDto.getId(),
                 null, // gameService.findGameById(resolutionDto.getGameId()),
+                resolutionDto.getDecision(),
+                resolutionDto.getResult(),
                 resolutionDto.getElapsedTime(),
                 resolutionDto.getSpeedQualifier(),
                 vaseAttributesJson,

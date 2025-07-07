@@ -2,7 +2,13 @@ package com.santobucle.VaseDB.entity;
 
 import java.util.Date;
 
+import com.santobucle.VaseDB.dto.enums.Decision;
+import com.santobucle.VaseDB.dto.enums.Result;
+import com.santobucle.VaseDB.mapper.DecisionConverter;
+import com.santobucle.VaseDB.mapper.ResultConverter;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,6 +37,14 @@ public class Resolution {
     @JoinColumn(name = "game_id") // , nullable = false, columnDefinition = new Game(-1l, -1f, new
                                   // ArrayList<Resolution>(), new Date())
     private Game game;
+
+    @Column
+    @Convert(converter = DecisionConverter.class)
+    private Decision decision;
+
+    @Column
+    @Convert(converter = ResultConverter.class)
+    private Result result;
 
     @Column(name = "elapsed_time")
     private double elapsedTime;
