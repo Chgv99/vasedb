@@ -2,6 +2,7 @@ package com.santobucle.VaseDB.dto;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.santobucle.VaseDB.dto.enums.Decision;
 import com.santobucle.VaseDB.dto.enums.Result;
 
@@ -15,13 +16,24 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResolutionDto {
+    
     private Long id;
+
     private Long gameId;
+
     private Decision decision;
+
     private Result result;
+
     private double elapsedTime;
+
     private String speedQualifier;
+    
+    @JsonProperty("stage")
     private StageDto stageDto;
+    
+    @JsonProperty("vaseAttributes")
     private VaseAttributesDto vaseAttributesDto;
+
     private Date date;
 }
