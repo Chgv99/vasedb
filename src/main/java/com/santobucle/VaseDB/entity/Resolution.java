@@ -52,6 +52,10 @@ public class Resolution {
     @Column(name = "speed_qualifier")
     private String speedQualifier;
 
+    @ManyToOne
+    @JoinColumn(name = "stage_id")
+    private Stage stage;
+
     @Column(name = "vase_attributes", columnDefinition = "json")
     private String vaseAttributesDto;
 

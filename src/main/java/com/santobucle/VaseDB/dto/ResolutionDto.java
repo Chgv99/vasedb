@@ -21,6 +21,7 @@ public class ResolutionDto {
     private Result result;
     private double elapsedTime;
     private String speedQualifier;
+    private StageDto stageDto;
     private VaseAttributesDto vaseAttributesDto;
     private Date date;
 }
