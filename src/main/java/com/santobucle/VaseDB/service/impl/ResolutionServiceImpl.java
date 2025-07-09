@@ -2,6 +2,8 @@ package com.santobucle.VaseDB.service.impl;
 
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.santobucle.VaseDB.dto.ResolutionDto;
 import com.santobucle.VaseDB.entity.Resolution;
 import com.santobucle.VaseDB.exception.ResourceNotFoundException;
@@ -40,17 +42,26 @@ public class ResolutionServiceImpl implements ResolutionService {
 
     @Override
     public ResolutionDto saveWithJsonCast(ResolutionDto resolutionDto) throws IllegalStateException {
-        Resolution savedResolution = resolutionRepository.saveWithJsonCast(
-                resolutionDto.getGameId(),
-                resolutionDto.getDecision().name(),
-                resolutionDto.getResult().name(),
-                resolutionDto.getElapsedTime(),
-                resolutionDto.getSpeedQualifier(),
-                resolutionDto.getStageDto().getId(),
-                null,// resolutionDto.getVaseAttributesDto().toString(),
-                resolutionDto.getDate())
-                .orElseThrow(() -> new IllegalStateException("An error has ocurred when trying to save Resolution."));
-        return resolutionMapper.mapToResolutionDto(savedResolution);
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            String vaseAttributesJson = mapper.writeValueAsString(resolutionDto.getVaseAttributesDto());
+
+            Resolution savedResolution = resolutionRepository.saveWithJsonCast(
+                    resolutionDto.getGameId(),
+                    resolutionDto.getDecision().name(),
+                    resolutionDto.getResult().name(),
+                    resolutionDto.getElapsedTime(),
+                    resolutionDto.getSpeedQualifier(),
+                    resolutionDto.getStageDto().getId(),
+                    vaseAttributesJson,
+                    resolutionDto.getDate()
+            ).orElseThrow(() -> new IllegalStateException("An error has occurred when trying to save Resolution."));
+
+            return resolutionMapper.mapToResolutionDto(savedResolution);
+
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException("Failed to serialize VaseAttributesDto to JSON", e);
+        }
     }
 
 }
