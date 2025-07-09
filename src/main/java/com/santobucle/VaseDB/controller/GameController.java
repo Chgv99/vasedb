@@ -27,7 +27,7 @@ public class GameController {
     private GameMapper gameMapper;
 
     @PostMapping
-    public ResponseEntity<GameResponse> createResolution(@RequestBody GameDto gameDto) {
+    public ResponseEntity<GameResponse> createGame(@RequestBody GameDto gameDto) {
         try {
             GameResponse gameResponse = gameMapper.mapToGameResponse(gameService.createGame(gameDto));
             return new ResponseEntity<>(gameResponse, HttpStatus.CREATED);
