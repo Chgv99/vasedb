@@ -21,10 +21,7 @@ public class ResolutionServiceImpl implements ResolutionService {
 
     @Override
     public ResolutionDto createResolution(ResolutionDto resolutionDto) {
-        Resolution resolution = resolutionMapper.mapToResolution(resolutionDto);
-
-        Resolution savedResolution = saveWithJsonCast(resolution);
-        return resolutionMapper.mapToResolutionDto(savedResolution);
+        return saveWithJsonCast(resolutionDto);
     }
 
     @Override
@@ -36,23 +33,24 @@ public class ResolutionServiceImpl implements ResolutionService {
     }
 
     @Override
-    public Resolution save(Resolution resolution) {
-        return resolutionRepository.save(resolution);
+    public ResolutionDto save(ResolutionDto resolutionDto) {
+        Resolution resolution = resolutionRepository.save(resolutionMapper.mapToResolution(resolutionDto));
+        return resolutionMapper.mapToResolutionDto(resolution);
     }
 
     @Override
-    public Resolution saveWithJsonCast(Resolution resolution) throws IllegalStateException {
+    public ResolutionDto saveWithJsonCast(ResolutionDto resolutionDto) throws IllegalStateException {
         Resolution savedResolution = resolutionRepository.saveWithJsonCast(
-                resolution.getGame().getId(),
-                resolution.getDecision().name(),
-                resolution.getResult().name(),
-                resolution.getElapsedTime(),
-                resolution.getSpeedQualifier(),
-                resolution.getVaseAttributesDto(),
-                resolution.getDate())
+                resolutionDto.getGameId(),
+                resolutionDto.getDecision().name(),
+                resolutionDto.getResult().name(),
+                resolutionDto.getElapsedTime(),
+                resolutionDto.getSpeedQualifier(),
+                resolutionDto.getStageDto().getId(),
+                null,// resolutionDto.getVaseAttributesDto().toString(),
+                resolutionDto.getDate())
                 .orElseThrow(() -> new IllegalStateException("An error has ocurred when trying to save Resolution."));
-        // return resolutionMapper.mapToResolutionDto(savedResolution);
-        return savedResolution;
+        return resolutionMapper.mapToResolutionDto(savedResolution);
     }
 
 }

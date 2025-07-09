@@ -1,14 +1,13 @@
 package com.santobucle.VaseDB.service;
 
 import com.santobucle.VaseDB.dto.ResolutionDto;
-import com.santobucle.VaseDB.entity.Resolution;
 
 public interface ResolutionService {
-    ResolutionDto createResolution(ResolutionDto resolutionDto);
+    public ResolutionDto createResolution(ResolutionDto resolutionDto);
 
     public ResolutionDto getResolutionById(Long resolutionId);
 
-    public Resolution save(Resolution resolution);
+    public ResolutionDto save(ResolutionDto resolution);
 
-    public Resolution saveWithJsonCast(Resolution resolution) throws IllegalStateException;
+    public ResolutionDto saveWithJsonCast(ResolutionDto resolutionDto) throws IllegalStateException;
 }
