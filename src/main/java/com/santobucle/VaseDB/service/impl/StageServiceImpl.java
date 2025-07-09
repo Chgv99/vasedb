@@ -23,12 +23,7 @@ public class StageServiceImpl implements StageService {
         if (existingStageDto != null)
             return existingStageDto;
 
-        Stage stage = StageMapper.mapToStage(stageDto);
-        return createStage(stage);
-    }
-
-    public StageDto createStage(Stage stage) {
-        Stage savedStage = stageRepository.save(stage);
+        Stage savedStage = stageRepository.save(StageMapper.mapToStage(stageDto));
         return StageMapper.mapToStageDto(savedStage);
     }
 

@@ -6,8 +6,6 @@ import com.santobucle.VaseDB.entity.Stage;
 public interface StageService {
     public StageDto createStage(StageDto stageDto);
 
-    public StageDto createStage(Stage stage);
-
     public StageDto getStageById(Long stageId);
 
     public StageDto getStageByName(String stageName);
