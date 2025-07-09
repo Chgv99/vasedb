@@ -7,14 +7,16 @@ import org.springframework.stereotype.Service;
 
 import com.santobucle.VaseDB.dto.BuildDto;
 import com.santobucle.VaseDB.dto.GameDto;
+import com.santobucle.VaseDB.dto.ResolutionDto;
+import com.santobucle.VaseDB.dto.StageDto;
 import com.santobucle.VaseDB.entity.Game;
-import com.santobucle.VaseDB.entity.Resolution;
 import com.santobucle.VaseDB.mapper.BuildMapper;
 import com.santobucle.VaseDB.mapper.GameMapper;
 import com.santobucle.VaseDB.repository.GameRepository;
 import com.santobucle.VaseDB.service.BuildService;
 import com.santobucle.VaseDB.service.GameService;
 import com.santobucle.VaseDB.service.ResolutionService;
+import com.santobucle.VaseDB.service.StageService;
 
 import lombok.AllArgsConstructor;
 
@@ -25,6 +27,8 @@ public class GameServiceImpl implements GameService {
     private GameRepository gameRepository;
 
     private ResolutionService resolutionService;
+
+    private StageService stageService;
 
     private BuildService buildService;
 
@@ -38,18 +42,22 @@ public class GameServiceImpl implements GameService {
         BuildDto buildDto = buildService.createBuild(game.getBuild());
 
         game.setBuild(BuildMapper.mapToBuild(buildDto));
-        Game savedGame = gameRepository.save(game);
+        GameDto savedGameDto = gameMapper.mapToGameDto(gameRepository.save(game));
 
-        List<Resolution> savedResolutions = new ArrayList<Resolution>();
-        for (Resolution resolution : game.getResolutions()) {
-            resolution.setGame(savedGame);
+        List<ResolutionDto> savedResolutionDtos = new ArrayList<ResolutionDto>();
+        for (ResolutionDto resolutionDto : savedGameDto.getResolutions()) {
+            resolutionDto.setGameId(savedGameDto.getId());
 
-            savedResolutions.add(resolutionService.saveWithJsonCast(resolution));
+            StageDto savedStageDto = stageService.createStage(resolutionDto.getStageDto());
+            resolutionDto.setStageDto(savedStageDto);
+            
+            savedResolutionDtos.add(resolutionService.saveWithJsonCast(resolutionDto));
         }
-        game.getResolutions().clear(); // Clear the existing collection
-        game.getResolutions().addAll(savedResolutions); // Add the new elements
-        GameDto gameDto = gameMapper.mapToGameDto(gameRepository.save(game));
-        return gameDto;
+        savedGameDto.getResolutions().clear(); // Clear the existing collection
+        savedGameDto.getResolutions().addAll(savedResolutionDtos); // Add the new elements
+
+        Game savedGameDtoWithDetails = gameRepository.save(gameMapper.mapToGame(savedGameDto));
+        return gameMapper.mapToGameDto(savedGameDtoWithDetails);
     }
 
     @Override
