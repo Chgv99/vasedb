@@ -16,7 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ResolutionDto {
     private Long id;
-    // private Long gameId;
+    private Long gameId;
     private Decision decision;
     private Result result;
     private double elapsedTime;

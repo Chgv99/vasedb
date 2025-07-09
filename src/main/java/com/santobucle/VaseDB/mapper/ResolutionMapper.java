@@ -6,11 +6,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.santobucle.VaseDB.dto.ResolutionDto;
 import com.santobucle.VaseDB.dto.VaseAttributesDto;
-import com.santobucle.VaseDB.dto.enums.Decision;
-import com.santobucle.VaseDB.dto.enums.Result;
 import com.santobucle.VaseDB.entity.Resolution;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class ResolutionMapper {
 
     public ResolutionDto mapToResolutionDto(Resolution resolution) {
@@ -25,8 +26,14 @@ public class ResolutionMapper {
             e.printStackTrace();
         }
 
+        Long gameId = null;
+        if (resolution.getGame() != null) {
+            gameId = resolution.getGame().getId();
+        }
+
         return new ResolutionDto(
                 resolution.getId(),
+                gameId,
                 resolution.getDecision(),
                 resolution.getResult(),
                 resolution.getElapsedTime(),
