@@ -26,6 +26,10 @@ public class Stage {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+    public Stage(String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)

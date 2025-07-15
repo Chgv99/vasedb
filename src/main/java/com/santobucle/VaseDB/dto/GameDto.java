@@ -15,7 +15,7 @@ import lombok.Setter;
 public class GameDto {
     private Long id;
     private float totalTime;
-    private BuildDto build;
+    private String build;
     private List<ResolutionDto> resolutions;
     private Date date;
 }

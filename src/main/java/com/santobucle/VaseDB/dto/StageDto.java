@@ -12,4 +12,8 @@ import lombok.Setter;
 public class StageDto {
     private Long id;
     private String name;
+
+    public StageDto(String name) {
+        this.name = name;
+    }
 }

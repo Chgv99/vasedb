@@ -29,8 +29,7 @@ public class ResolutionDto {
 
     private String speedQualifier;
     
-    @JsonProperty("stage")
-    private StageDto stageDto;
+    private String stage;
     
     @JsonProperty("vaseAttributes")
     private VaseAttributesDto vaseAttributesDto;

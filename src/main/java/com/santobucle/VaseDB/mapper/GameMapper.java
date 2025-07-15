@@ -27,24 +27,17 @@ public class GameMapper {
         return new GameDto(
                 game.getId(),
                 game.getTotalTime(),
-                BuildMapper.mapToBuildDto(game.getBuild()),
+                game.getBuild().getVersion(),// BuildMapper.mapToBuildDto(game.getBuild()),
                 resolutionDtoList,
                 game.getDate());
     }
 
     public Game mapToGame(GameDto gameDto) throws NullPointerException {
-        List<Resolution> resolutionList = new ArrayList<>();
-
-        for (ResolutionDto resolutionDto : gameDto.getResolutions()) {
-            Resolution resolution = resolutionMapper.mapToResolution(resolutionDto);
-            resolutionList.add(resolution);
-        }
-
         return new Game(
                 gameDto.getId(),
                 gameDto.getTotalTime(),
-                BuildMapper.mapToBuild(gameDto.getBuild()),
-                resolutionList,
+                null,//new Build(gameDto.getBuild()),// BuildMapper.mapToBuild(gameDto.getBuild()),
+                null,// resolutionList,
                 gameDto.getDate());
     }
 

@@ -18,23 +18,13 @@ public class BuildServiceImpl implements BuildService {
     private BuildRepository buildRepository;
 
     @Override
-    public BuildDto createBuild(BuildDto buildDto) {
-        BuildDto resultBuildDto;
-        try {
-            resultBuildDto = getBuildByName(buildDto.getVersion());
-        } catch (ResourceNotFoundException e) {
-            resultBuildDto = createBuild(BuildMapper.mapToBuild(buildDto));
-        }
-        return resultBuildDto;
-    }
-
-    @Override
-    public BuildDto createBuild(Build build) {
+    public BuildDto createBuild(String name) {
         BuildDto savedBuildDto;
         try {
-            savedBuildDto = getBuildByName(build.getVersion());
+            savedBuildDto = getBuildByName(name);
         } catch (ResourceNotFoundException e) {
-            savedBuildDto = createBuild(build);
+            Build savedBuild = buildRepository.save(new Build(name));
+            savedBuildDto = BuildMapper.mapToBuildDto(savedBuild);
         }
         return savedBuildDto;
     }

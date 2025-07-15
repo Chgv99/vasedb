@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import com.santobucle.VaseDB.dto.BuildDto;
 import com.santobucle.VaseDB.dto.GameDto;
 import com.santobucle.VaseDB.dto.ResolutionDto;
-import com.santobucle.VaseDB.dto.StageDto;
+import com.santobucle.VaseDB.entity.Build;
 import com.santobucle.VaseDB.entity.Game;
+import com.santobucle.VaseDB.entity.Resolution;
 import com.santobucle.VaseDB.mapper.BuildMapper;
 import com.santobucle.VaseDB.mapper.GameMapper;
+import com.santobucle.VaseDB.mapper.ResolutionMapper;
 import com.santobucle.VaseDB.repository.GameRepository;
 import com.santobucle.VaseDB.service.BuildService;
 import com.santobucle.VaseDB.service.GameService;
@@ -34,30 +36,44 @@ public class GameServiceImpl implements GameService {
 
     private GameMapper gameMapper;
 
+    private ResolutionMapper resolutionMapper;
+
+    /** Handles game creation and persistence
+     *  Note: We store the game before handling resolutions
+     *  because we cannot rely on JPA cascading, as we need
+     *  some JSON treatment on the repository. And to do that
+     *  we need to save the resolutions manually with a gameId. */
     public GameDto createGame(GameDto gameDto) {
-        return save(gameMapper.mapToGame(gameDto));
-    }
+        // Save the game before handling build and resolutions
+        Game savedGame = gameRepository.save(gameMapper.mapToGame(gameDto));
 
-    private GameDto save(Game game) {
-        BuildDto buildDto = buildService.createBuild(game.getBuild());
+        // Assign build (stored or new) to the gameDto
+        BuildDto buildDto = buildService.createBuild(gameDto.getBuild());
+        Build savedBuild = BuildMapper.mapToBuild(buildDto);
+        // gameDto.setBuild(buildDto.getVersion());
 
-        game.setBuild(BuildMapper.mapToBuild(buildDto));
-        GameDto savedGameDto = gameMapper.mapToGameDto(gameRepository.save(game));
+        List<Resolution> updatedResolutions = new ArrayList<Resolution>();
+        for (ResolutionDto resolutionDto : gameDto.getResolutions()) {
+            // Assign saved gameId
+            resolutionDto.setGameId(savedGame.getId());
 
-        List<ResolutionDto> savedResolutionDtos = new ArrayList<ResolutionDto>();
-        for (ResolutionDto resolutionDto : savedGameDto.getResolutions()) {
-            resolutionDto.setGameId(savedGameDto.getId());
-
-            StageDto savedStageDto = stageService.createStage(resolutionDto.getStageDto());
-            resolutionDto.setStageDto(savedStageDto);
-            
-            savedResolutionDtos.add(resolutionService.saveWithJsonCast(resolutionDto));
+            // Stage handled inside saveWithJsonCast
+            ResolutionDto savedResolutionDto = resolutionService.saveWithJsonCast(resolutionDto);
+            updatedResolutions.add(resolutionMapper.mapToResolution(savedResolutionDto));
         }
-        savedGameDto.getResolutions().clear(); // Clear the existing collection
-        savedGameDto.getResolutions().addAll(savedResolutionDtos); // Add the new elements
 
-        Game savedGameDtoWithDetails = gameRepository.save(gameMapper.mapToGame(savedGameDto));
-        return gameMapper.mapToGameDto(savedGameDtoWithDetails);
+        // Create an updated version of the saved game
+        Game game = new Game(
+            savedGame.getId(),
+            savedGame.getTotalTime(),
+            savedBuild,// BuildMapper.mapToBuild(buildDto),
+            updatedResolutions,
+            savedGame.getDate()
+        );
+
+        // Store the updated game
+        Game updatedSavedGame = gameRepository.save(game);
+        return gameMapper.mapToGameDto(updatedSavedGame);
     }
 
     @Override

@@ -25,6 +25,10 @@ public class Build {
     @Column(name = "name", nullable = false, unique = true)
     private String version;
 
+    public Build(String version) {
+        this.setVersion(version);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)

@@ -38,7 +38,7 @@ public class ResolutionMapper {
                 resolution.getResult(),
                 resolution.getElapsedTime(),
                 resolution.getSpeedQualifier(),
-                StageMapper.mapToStageDto(resolution.getStage()),
+                resolution.getStage().getName(),// StageMapper.mapToStageDto(resolution.getStage()),
                 vaseAttributesDto,
                 resolution.getDate());
     }
@@ -60,7 +60,7 @@ public class ResolutionMapper {
                 resolutionDto.getResult(),
                 resolutionDto.getElapsedTime(),
                 resolutionDto.getSpeedQualifier(),
-                StageMapper.mapToStage(resolutionDto.getStageDto()),
+                null, //stage,// StageMapper.mapToStage(resolutionDto.getStage()),
                 vaseAttributesJson,
                 resolutionDto.getDate());
     }

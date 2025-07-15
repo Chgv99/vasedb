@@ -5,11 +5,15 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.santobucle.VaseDB.dto.ResolutionDto;
+import com.santobucle.VaseDB.dto.StageDto;
 import com.santobucle.VaseDB.entity.Resolution;
+import com.santobucle.VaseDB.entity.Stage;
 import com.santobucle.VaseDB.exception.ResourceNotFoundException;
 import com.santobucle.VaseDB.mapper.ResolutionMapper;
+import com.santobucle.VaseDB.mapper.StageMapper;
 import com.santobucle.VaseDB.repository.ResolutionRepository;
 import com.santobucle.VaseDB.service.ResolutionService;
+import com.santobucle.VaseDB.service.StageService;
 
 import lombok.AllArgsConstructor;
 
@@ -20,6 +24,8 @@ public class ResolutionServiceImpl implements ResolutionService {
     private ResolutionRepository resolutionRepository;
 
     private ResolutionMapper resolutionMapper;
+
+    private StageService stageService;
 
     @Override
     public ResolutionDto createResolution(ResolutionDto resolutionDto) {
@@ -43,6 +49,11 @@ public class ResolutionServiceImpl implements ResolutionService {
     @Override
     public ResolutionDto saveWithJsonCast(ResolutionDto resolutionDto) throws IllegalStateException {
         try {
+            // Get or create stage by its name
+            StageDto stageDto = new StageDto(resolutionDto.getStage());
+            StageDto savedStageDto = stageService.createStage(stageDto);
+            Stage savedStage = StageMapper.mapToStage(savedStageDto);
+
             ObjectMapper mapper = new ObjectMapper();
             String vaseAttributesJson = mapper.writeValueAsString(resolutionDto.getVaseAttributesDto());
 
@@ -52,10 +63,10 @@ public class ResolutionServiceImpl implements ResolutionService {
                     resolutionDto.getResult().name(),
                     resolutionDto.getElapsedTime(),
                     resolutionDto.getSpeedQualifier(),
-                    resolutionDto.getStageDto().getId(),
+                    savedStage.getId(),
                     vaseAttributesJson,
-                    resolutionDto.getDate()
-            ).orElseThrow(() -> new IllegalStateException("An error has occurred when trying to save Resolution."));
+                    resolutionDto.getDate()).orElseThrow(
+                            () -> new IllegalStateException("An error has occurred when trying to save Resolution."));
 
             return resolutionMapper.mapToResolutionDto(savedResolution);
 
