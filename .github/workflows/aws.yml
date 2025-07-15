@@ -52,5 +52,5 @@ jobs:
             VASEDB_API_PER_IP_TIME_UNIT=${{ secrets.VASEDB_API_PER_IP_TIME_UNIT }}
             EOF
             
-            docker-compose pull
-            docker-compose up -d
+            docker compose pull
+            docker compose up -d
