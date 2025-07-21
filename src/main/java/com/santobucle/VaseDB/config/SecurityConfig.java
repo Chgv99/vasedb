@@ -8,19 +8,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Configuration
 @EnableConfigurationProperties(SecurityProperties.class)
 public class SecurityConfig {
 
     private final SecurityProperties securityProperties;
 
-    public SecurityConfig(SecurityProperties securityProperties) {
-        this.securityProperties = securityProperties;
-    }
+    private final JwtAuthenticationFilter authFilter;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -31,7 +33,8 @@ public class SecurityConfig {
                     auth
                             .requestMatchers("/auth/**").permitAll() // check if it ignores cors config
                             .anyRequest().authenticated();
-                });
+                })
+                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

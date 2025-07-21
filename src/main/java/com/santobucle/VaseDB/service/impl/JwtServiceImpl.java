@@ -3,11 +3,16 @@ package com.santobucle.VaseDB.service.impl;
 import java.security.Key;
 import java.util.Date;
 
+import javax.crypto.SecretKey;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 
 @Service
 public class JwtServiceImpl implements JwtService {
@@ -17,6 +22,13 @@ public class JwtServiceImpl implements JwtService {
 
     @Value("${application.security.jwt.expiration}")
     private int EXPIRATION_MS;
+
+    private SecretKey key;
+
+    @PostConstruct
+    public void init() {
+        this.key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+    }
 
     @Override
     public String generateToken(String userId) {
@@ -29,19 +41,25 @@ public class JwtServiceImpl implements JwtService {
                 .compact();
     }
 
-    // public boolean isTokenValid(String token) {
-    //     SecretKey secretKey = (SecretKey) getSignInKey();
-    //     try {
-    //         Jwts.builder()
-    //             .signWith(getSignInKey())
-    //             .parseClaimsJws(token);
-    //         return true;
-    //     } catch (JwtException e) {
-    //         return false;
-    //     }
-    // }
+    @Override
+    public String extractUserId(String token) {
+        try {
+            return extractAllClaims(token).getSubject();
+        } catch (JwtException | IllegalArgumentException e) {
+            return null; // invalid token
+        }
+    }
 
-    private Key getSignInKey() {
-        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+    private SecretKey getSignInKey() {
+        return key;
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts
+            .parser()
+            .verifyWith(getSignInKey())
+            .build()
+            .parseSignedClaims(token)
+            .getPayload();
     }
 }
