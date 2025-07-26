@@ -1,7 +1,9 @@
-package com.santobucle.VaseDB.dto;
+package com.santobucle.VaseDB.dto.request;
 
 import java.util.Date;
 import java.util.List;
+
+import com.santobucle.VaseDB.dto.ResolutionDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GameDto {
+public class GameRequest {
     private Long id;
     private float totalTime;
     private String build;

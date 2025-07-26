@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.santobucle.VaseDB.dto.GameDto;
+import com.santobucle.VaseDB.dto.request.GameRequest;
 import com.santobucle.VaseDB.dto.response.GameResponse;
 import com.santobucle.VaseDB.mapper.GameMapper;
 import com.santobucle.VaseDB.service.GameService;
@@ -27,9 +27,9 @@ public class GameController {
     private GameMapper gameMapper;
 
     @PostMapping
-    public ResponseEntity<GameResponse> createGame(@RequestBody GameDto gameDto) {
+    public ResponseEntity<GameResponse> createGame(@RequestBody GameRequest gameRequest) {
         try {
-            GameResponse gameResponse = gameMapper.mapToGameResponse(gameService.createGame(gameDto));
+            GameResponse gameResponse = gameMapper.mapToGameResponse(gameService.createGame(gameRequest));
             return new ResponseEntity<>(gameResponse, HttpStatus.CREATED);
         } catch (NullPointerException e) {
             System.err.println("An error ocurred while saving a game. " + e.getMessage());

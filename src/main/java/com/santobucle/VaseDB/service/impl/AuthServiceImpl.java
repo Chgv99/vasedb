@@ -19,11 +19,11 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public TokenResponse register(RegisterRequest request) {
-        String userId = request.userId();
-        if (request.userId() == null || request.userId().trim().isEmpty()) {
+        String userId = request.userUuid();
+        if (request.userUuid() == null || request.userUuid().trim().isEmpty()) {
             userId = UUID.randomUUID().toString();  // generate unique ID
         }
-        return new TokenResponse(jwtService.generateToken(userId));
+        return new TokenResponse(jwtService.generateToken(userId), userId);
     }
 
     @Override

@@ -28,6 +28,10 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "user_uuid")
+    private User user;
+
     @Column(name = "total_time")
     private float totalTime;
 

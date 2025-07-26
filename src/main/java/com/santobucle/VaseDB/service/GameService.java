@@ -1,10 +1,10 @@
 package com.santobucle.VaseDB.service;
 
-import com.santobucle.VaseDB.dto.GameDto;
+import com.santobucle.VaseDB.dto.request.GameRequest;
 import com.santobucle.VaseDB.entity.Game;
 
 public interface GameService {
-    public GameDto createGame(GameDto gameDto);
+    public GameRequest createGame(GameRequest gameDto);
 
     public Game findGameById(Long gameId);
 }

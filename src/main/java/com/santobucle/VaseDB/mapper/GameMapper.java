@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.santobucle.VaseDB.dto.GameDto;
 import com.santobucle.VaseDB.dto.ResolutionDto;
+import com.santobucle.VaseDB.dto.request.GameRequest;
 import com.santobucle.VaseDB.dto.response.GameResponse;
 import com.santobucle.VaseDB.entity.Game;
 import com.santobucle.VaseDB.entity.Resolution;
@@ -18,30 +18,35 @@ public class GameMapper {
     @Autowired
     private ResolutionMapper resolutionMapper;
 
-    public GameDto mapToGameDto(Game game) throws NullPointerException {
+    @Autowired
+    private UserMapper userMapper;
+
+    public GameRequest mapToGameDto(Game game) throws NullPointerException {
         List<ResolutionDto> resolutionDtoList = new ArrayList<>();
         for (Resolution resolution : game.getResolutions()) {
             resolutionDtoList.add(resolutionMapper.mapToResolutionDto(resolution));
         }
 
-        return new GameDto(
+        return new GameRequest(
                 game.getId(),
+                // userMapper.mapToUserDto(game.getUserUuid()),
                 game.getTotalTime(),
                 game.getBuild().getVersion(),// BuildMapper.mapToBuildDto(game.getBuild()),
                 resolutionDtoList,
                 game.getDate());
     }
 
-    public Game mapToGame(GameDto gameDto) throws NullPointerException {
+    public Game mapToGame(GameRequest gameRequest) throws NullPointerException {
         return new Game(
-                gameDto.getId(),
-                gameDto.getTotalTime(),
+                gameRequest.getId(),
+                null,
+                gameRequest.getTotalTime(),
                 null,//new Build(gameDto.getBuild()),// BuildMapper.mapToBuild(gameDto.getBuild()),
                 null,// resolutionList,
-                gameDto.getDate());
+                gameRequest.getDate());
     }
 
-    public GameResponse mapToGameResponse(GameDto gameDto) {
+    public GameResponse mapToGameResponse(GameRequest gameDto) {
         return new GameResponse(
                 gameDto.getId(),
                 gameDto.getTotalTime(),
