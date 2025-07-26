@@ -36,6 +36,7 @@ jobs:
             export DB_HOST="${{ secrets.DB_HOST }}"
             export DB_USER="${{ secrets.POSTGRES_USER }}"
             export DB_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}"
+            export JWT_SECRET_KEY="${{ secrets.JWT_SECRET_KEY }}"
 
             # Write environment variables to .env
             cat > .env <<EOF
@@ -46,6 +47,7 @@ jobs:
             POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
             VASEDB_API_LISTEN_PORT=${{ secrets.VASEDB_API_LISTEN_PORT }}
             VASEDB_API_KEY=${{ secrets.VASEDB_API_KEY }}
+            JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
             VASEDB_CLIENT_URL=${{ vars.VASEDB_CLIENT_URL }}
             VASEDB_API_PER_IP_CAP=${{ secrets.VASEDB_API_PER_IP_CAP }}
             VASEDB_API_PER_IP_TIME=${{ secrets.VASEDB_API_PER_IP_TIME }}
