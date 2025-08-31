@@ -21,35 +21,30 @@ public class GameMapper {
     @Autowired
     private UserMapper userMapper;
 
-    public GameRequest mapToGameDto(Game game) throws NullPointerException {
+    public GameResponse mapToGameDto(Game game) throws NullPointerException {
         List<ResolutionDto> resolutionDtoList = new ArrayList<>();
         for (Resolution resolution : game.getResolutions()) {
             resolutionDtoList.add(resolutionMapper.mapToResolutionDto(resolution));
         }
 
-        return new GameRequest(
+        return new GameResponse(
                 game.getId(),
-                // userMapper.mapToUserDto(game.getUserUuid()),
+                userMapper.mapToUserDto(game.getUser()),
                 game.getTotalTime(),
+                game.getScore(),
+                game.isHiScore(),
                 game.getBuild().getVersion(),// BuildMapper.mapToBuildDto(game.getBuild()),
                 resolutionDtoList,
                 game.getDate());
     }
 
-    public Game mapToGame(GameRequest gameRequest) throws NullPointerException {
-        return new Game(
-                gameRequest.getId(),
-                null,
-                gameRequest.getTotalTime(),
-                null,//new Build(gameDto.getBuild()),// BuildMapper.mapToBuild(gameDto.getBuild()),
-                null,// resolutionList,
-                gameRequest.getDate());
-    }
-
-    public GameResponse mapToGameResponse(GameRequest gameDto) {
-        return new GameResponse(
-                gameDto.getId(),
-                gameDto.getTotalTime(),
-                gameDto.getDate());
-    }
+    // public Game mapToGame(GameRequest gameRequest) throws NullPointerException {
+    //     return new Game(
+    //             gameRequest.getId(),
+    //             null,
+    //             gameRequest.getTotalTime(),
+    //             null,//new Build(gameDto.getBuild()),// BuildMapper.mapToBuild(gameDto.getBuild()),
+    //             null,// resolutionList,
+    //             gameRequest.getDate());
+    // }
 }

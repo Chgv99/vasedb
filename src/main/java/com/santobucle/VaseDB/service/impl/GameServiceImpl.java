@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.santobucle.VaseDB.dto.BuildDto;
 import com.santobucle.VaseDB.dto.ResolutionDto;
 import com.santobucle.VaseDB.dto.request.GameRequest;
+import com.santobucle.VaseDB.dto.response.GameResponse;
 import com.santobucle.VaseDB.dto.response.UserResponse;
 import com.santobucle.VaseDB.entity.Build;
 import com.santobucle.VaseDB.entity.Game;
@@ -49,18 +50,28 @@ public class GameServiceImpl implements GameService {
 
     private ResolutionMapper resolutionMapper;
 
-    /** Handles game creation and persistence
-     *  Note: We store the game before handling resolutions
-     *  because we cannot rely on JPA cascading, as we need
-     *  some JSON treatment on the repository. And to do that
-     *  we need to save the resolutions manually with a gameId. */
-    public GameRequest createGame(GameRequest gameRequest) {
-        UUID userUuid = UUID.fromString(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        
+    /**
+     * Handles game creation and persistence
+     * Note: We store the game before handling resolutions
+     * because we cannot rely on JPA cascading, as we need
+     * some JSON treatment on the repository. And to do that
+     * we need to save the resolutions manually with a gameId.
+     */
+    public GameResponse createGame(GameRequest gameRequest) {
+        UUID userUuid = UUID
+                .fromString(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+
         UserResponse userResponse = userService.create(userUuid);
-        Game game = new Game(gameRequest.getId(), userMapper.mapToUser(userResponse), gameRequest.getTotalTime(), null,
-                null, gameRequest.getDate());
-        
+        Game game = new Game(
+                null,
+                userMapper.mapToUser(userResponse),
+                gameRequest.getTotalTime(),
+                gameRequest.getScore(),
+                gameRequest.isHiScore(),
+                null,
+                null,
+                gameRequest.getDate());
+
         // Save the game before handling build and resolutions
         Game savedGame = gameRepository.save(game);
 
@@ -81,13 +92,14 @@ public class GameServiceImpl implements GameService {
 
         // Create an updated version of the saved game
         Game updatedGame = new Game(
-            savedGame.getId(),
-            savedGame.getUser(),
-            savedGame.getTotalTime(),
-            savedBuild,// BuildMapper.mapToBuild(buildDto),
-            updatedResolutions,
-            savedGame.getDate()
-        );
+                savedGame.getId(),
+                savedGame.getUser(),
+                savedGame.getTotalTime(),
+                savedGame.getScore(),
+                savedGame.isHiScore(),
+                savedBuild, // BuildMapper.mapToBuild(buildDto),
+                updatedResolutions,
+                savedGame.getDate());
 
         // Store the updated game
         Game updatedSavedGame = gameRepository.save(updatedGame);

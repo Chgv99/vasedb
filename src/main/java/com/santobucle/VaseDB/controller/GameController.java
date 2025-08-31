@@ -29,8 +29,7 @@ public class GameController {
     @PostMapping
     public ResponseEntity<GameResponse> createGame(@RequestBody GameRequest gameRequest) {
         try {
-            GameResponse gameResponse = gameMapper.mapToGameResponse(gameService.createGame(gameRequest));
-            return new ResponseEntity<>(gameResponse, HttpStatus.CREATED);
+            return new ResponseEntity<>(gameService.createGame(gameRequest), HttpStatus.CREATED);
         } catch (NullPointerException e) {
             System.err.println("An error ocurred while saving a game. " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

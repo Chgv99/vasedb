@@ -35,6 +35,12 @@ public class Game {
     @Column(name = "total_time")
     private float totalTime;
 
+    @Column(name = "score")
+    private int score;
+
+    @Column(name = "is_hi_score")
+    private boolean isHiScore;
+
     @ManyToOne
     @JoinColumn(name = "build_id")
     private Build build;

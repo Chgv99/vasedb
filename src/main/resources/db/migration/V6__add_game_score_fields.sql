@@ -1,0 +1,3 @@
+ALTER TABLE game
+ADD COLUMN score INTEGER,
+ADD COLUMN is_hi_score BOOLEAN;

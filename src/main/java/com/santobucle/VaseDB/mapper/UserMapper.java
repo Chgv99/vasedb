@@ -9,8 +9,8 @@ import com.santobucle.VaseDB.entity.User;
 @Component
 public class UserMapper {
     
-    public UserRequest mapToUserDto(User user) {
-        return new UserRequest(user.getUuid(), user.getNickname(), user.getCreatedAt());
+    public UserResponse mapToUserDto(User user) {
+        return new UserResponse(user.getUuid(), user.getNickname(), user.getCreatedAt());
     }
 
     public User mapToUser(UserRequest userRequest) {
