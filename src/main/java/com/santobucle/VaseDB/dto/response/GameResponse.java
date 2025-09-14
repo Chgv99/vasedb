@@ -19,7 +19,9 @@ public class GameResponse {
     private UserResponse user;
     private float totalTime;
     private int score;
+    private int ranking; // Leaderboard positions
     private boolean isHiScore;
+    private String userNickname;
     private String build;
     private List<ResolutionDto> resolutions;
     private Date date;

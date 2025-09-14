@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.santobucle.VaseDB.dto.ResolutionDto;
-import com.santobucle.VaseDB.dto.request.GameRequest;
 import com.santobucle.VaseDB.dto.response.GameResponse;
+import com.santobucle.VaseDB.dto.response.ReducedGameResponse;
 import com.santobucle.VaseDB.entity.Game;
 import com.santobucle.VaseDB.entity.Resolution;
 
@@ -21,7 +21,7 @@ public class GameMapper {
     @Autowired
     private UserMapper userMapper;
 
-    public GameResponse mapToGameDto(Game game) throws NullPointerException {
+    public GameResponse mapToGameDto(Game game, int ranking, String userNickname) throws NullPointerException {
         List<ResolutionDto> resolutionDtoList = new ArrayList<>();
         for (Resolution resolution : game.getResolutions()) {
             resolutionDtoList.add(resolutionMapper.mapToResolutionDto(resolution));
@@ -32,10 +32,23 @@ public class GameMapper {
                 userMapper.mapToUserDto(game.getUser()),
                 game.getTotalTime(),
                 game.getScore(),
+                ranking,
                 game.isHiScore(),
+                userNickname,
                 game.getBuild().getVersion(),// BuildMapper.mapToBuildDto(game.getBuild()),
                 resolutionDtoList,
                 game.getDate());
+    }
+
+    public ReducedGameResponse mapToReducedGameResponse(Game game) {
+        return new ReducedGameResponse(
+            game.getId(),
+            game.getUser().getUuid(),
+            game.getUser().getNickname(),
+            game.getScore(),
+            game.getTotalTime(),
+            game.getBuild().getVersion()
+        );
     }
 
     // public Game mapToGame(GameRequest gameRequest) throws NullPointerException {

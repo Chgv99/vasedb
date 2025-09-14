@@ -12,5 +12,7 @@ public interface BuildService {
 
     public Build getBuild(Build build);
 
+    public BuildDto getLatestBuild();
+
     public Build resolveBuild(Build build);
 }

@@ -48,6 +48,12 @@ public class BuildServiceImpl implements BuildService {
         return buildRepository.findByName(build.getVersion()).orElse(null);
     }
 
+    public BuildDto getLatestBuild() {
+        Build build = buildRepository.findTop1ByOrderByIdDesc()
+                .orElseThrow(() -> new ResourceNotFoundException("No builds found."));
+        return BuildMapper.mapToBuildDto(build);
+    }
+
     @Override
     public Build resolveBuild(Build build) {
         return buildRepository.findByName(build.getVersion())

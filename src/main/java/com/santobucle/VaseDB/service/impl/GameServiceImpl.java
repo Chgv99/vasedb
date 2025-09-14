@@ -1,7 +1,6 @@
 package com.santobucle.VaseDB.service.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,12 +10,16 @@ import org.springframework.stereotype.Service;
 import com.santobucle.VaseDB.dto.BuildDto;
 import com.santobucle.VaseDB.dto.ResolutionDto;
 import com.santobucle.VaseDB.dto.request.GameRequest;
+import com.santobucle.VaseDB.dto.request.PersonalRankingRequest;
+import com.santobucle.VaseDB.dto.request.RankingRequest;
 import com.santobucle.VaseDB.dto.response.GameResponse;
+import com.santobucle.VaseDB.dto.response.PersonalRankingResponse;
+import com.santobucle.VaseDB.dto.response.RankingResponse;
+import com.santobucle.VaseDB.dto.response.ReducedGameResponse;
 import com.santobucle.VaseDB.dto.response.UserResponse;
 import com.santobucle.VaseDB.entity.Build;
 import com.santobucle.VaseDB.entity.Game;
 import com.santobucle.VaseDB.entity.Resolution;
-import com.santobucle.VaseDB.entity.User;
 import com.santobucle.VaseDB.mapper.BuildMapper;
 import com.santobucle.VaseDB.mapper.GameMapper;
 import com.santobucle.VaseDB.mapper.ResolutionMapper;
@@ -103,12 +106,55 @@ public class GameServiceImpl implements GameService {
 
         // Store the updated game
         Game updatedSavedGame = gameRepository.save(updatedGame);
-        return gameMapper.mapToGameDto(updatedSavedGame);
+        return gameMapper.mapToGameDto(updatedSavedGame, getTop10Ranking(savedGame), userResponse.getNickname());
     }
 
-    @Override
-    public Game findGameById(Long gameId) {
-        return gameRepository.findById(gameId).orElse(null);
+    // TODO: Revisar lógica de empates (si un jugador empata con otro, debería
+    // quedar por debajo, no por encima)
+    private int getTop10Ranking(Game game) {
+        List<Game> leaderboard = gameRepository.findTop10GamesUniqueUserByBuildIncludingGameId(game.getId(),
+                game.getBuild().getId());
+        return leaderboard.indexOf(game) + 1;
+    }
+
+    // TODO: Revisar lógica de empates (si un jugador empata con otro, debería
+    // quedar por debajo, no por encima)
+    public RankingResponse getTop10Ranking(RankingRequest rankingRequest) {
+        BuildDto buildDto = buildService.getBuildByName(rankingRequest.buildName());
+
+        List<Game> leaderboard = gameRepository.findTop10GamesUniqueUserByBuild(buildDto.getId());
+        int ranking = 1;
+        while (ranking <= leaderboard.size()) {
+            if (rankingRequest.score() >= leaderboard.get(ranking - 1).getScore()) {
+                return new RankingResponse(rankingRequest.score(), ranking);
+            }
+            ranking++;
+        }
+
+        if (ranking > 10)
+            return new RankingResponse(rankingRequest.score(), -1);
+
+        return new RankingResponse(rankingRequest.score(), ranking);
+    }
+
+    public PersonalRankingResponse getPersonalRanking(PersonalRankingRequest rankingRequest) {
+        BuildDto buildDto = buildService.getBuildByName(rankingRequest.buildName());
+        Game game = gameRepository.findById(rankingRequest.gameId()).orElse(null);
+
+        List<Game> userGames = gameRepository.findByUserAndBuildOrderByScoreDescDateAsc(game.getUser(),
+                BuildMapper.mapToBuild(buildDto));
+        return new PersonalRankingResponse(
+                rankingRequest.gameId(),
+                userGames.indexOf(game) + 1);
+    }
+
+    public List<ReducedGameResponse> getLeaderboard(String buildName) {
+        BuildDto buildDto = buildName == null
+                ? buildService.getLatestBuild()
+                : buildService.getBuildByName(buildName);
+        List<Game> leaderboard = gameRepository.findTop10GamesUniqueUserByBuild(buildDto.getId());
+        return leaderboard.stream()
+                .map(gameMapper::mapToReducedGameResponse).toList();
     }
 
 }
