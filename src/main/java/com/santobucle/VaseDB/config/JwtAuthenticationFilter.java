@@ -1,15 +1,19 @@
 package com.santobucle.VaseDB.config;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.santobucle.VaseDB.service.impl.JwtService;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,15 +42,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String jwt = authHeader.substring(7);
 
-        String userId = jwtService.extractUserId(jwt); // your method to validate + extract
-        
-        if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                    userId, null, List.of() // authorities if you have them
-            );
-            SecurityContextHolder.getContext().setAuthentication(auth);
+        try {
+            Claims claims = jwtService.extractClaims(jwt);
+            if (claims.getExpiration().before(new Date())) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Token expired");
+                return;
+            }
+
+            String userId = claims.getSubject();
+            if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                        userId, null, List.of() // authorities if you have them
+                );
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
+        } catch (JwtException e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Invalid token");
+            return;
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        List<String> excludeUrlPatterns = List.of("/auth/register");
+        AntPathMatcher pathMatcher = new AntPathMatcher();
+        return excludeUrlPatterns.stream()
+                .anyMatch(pattern -> pathMatcher.match(pattern, request.getServletPath()));
     }
 }

@@ -42,9 +42,9 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String extractUserId(String token) {
+    public Claims extractClaims(String token) {
         try {
-            return extractAllClaims(token).getSubject();
+            return extractAllClaims(token);
         } catch (JwtException | IllegalArgumentException e) {
             return null; // invalid token
         }
